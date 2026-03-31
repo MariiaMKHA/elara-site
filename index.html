@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ELARA | Premium Architecture &amp; Real Estate</title>
+<!-- Fonts: Montserrat for UI/Structure, Playfair Display for Editorial Headings -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://res.cloudinary.com" rel="preconnect"/>
+<link crossorigin="" href="https://cdnjs.cloudflare.com" rel="preconnect"/>
+<link crossorigin="" href="https://cdn.jsdelivr.net" rel="preconnect"/>
+<link crossorigin="" href="https://cdn.tailwindcss.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const testimonialsScroller = document.querySelector('#testimonials-pin .overflow-x-auto');
+        const testimonialsPrevBtn = document.getElementById('testimonialsPrevBtn');
+        const testimonialsNextBtn = document.getElementById('testimonialsNextBtn');
+        function getTestimonialStep() {
+            const firstCard = document.querySelector('.testimonial-card-enhanced');
+            if (!firstCard) return 320;
+            const styles = window.getComputedStyle(firstCard.parentElement || firstCard);
+            const gap = parseFloat(styles.columnGap || styles.gap || 16) || 16;
+            return firstCard.getBoundingClientRect().width + gap;
+        }
+        testimonialsPrevBtn?.addEventListener('click', () => {
+            testimonialsScroller?.scrollBy({ left: -getTestimonialStep(), behavior: 'smooth' });
+        });
+        testimonialsNextBtn?.addEventListener('click', () => {
+            testimonialsScroller?.scrollBy({ left: getTestimonialStep(), behavior: 'smooth' });
+        });
+});
+</script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#070708',
+                        charcoal: '#121214',
+                        surface: '#1c1c1e',
+                        bronze: '#C39A52',
+                        bronzeHover: '#D4AF6A',
+                        sand: '#EAE7E0',
+                        alabaster: '#F7F6F3',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    letterSpacing: {
+                        'editorial': '0.1em',
+                        'editorial-wide': '0.2em',
+                        'editorial-tight': '0.02em',
+                    }
+                }
+            }
+        }
+    </script>
+<!-- Alpine.js -->
+<script defer="" src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<!-- GSAP & Lenis for Award-Level Motion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+<!-- Custom CSS -->
+<style>
+        :root {
+            --easing-standard: cubic-bezier(0.25, 1, 0.5, 1);
+            --easing-slow: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: #070708;
+            color: #f4f4f5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body.modal-open {
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        /* Lenis Smooth Scroll Setup */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth[data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
+        /* Typography Formatting */
+        .heading-display { line-height: 1.1; }
+        .text-balance { text-wrap: balance; }
+        
+        /* Premium Borders */
+        .border-thin-b { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .border-thin-b-dark { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+        .border-thin-t-dark { border-top: 1px solid rgba(0, 0, 0, 0.1); }
+
+        /* Image Masking & Interactions */
+        .img-wrapper {
+            overflow: hidden;
+            position: relative;
+        }
+        .img-zoom {
+            transition: transform 1.8s var(--easing-slow);
+            will-change: transform;
+        }
+        .group:hover .img-zoom {
+            transform: scale(1.04);
+        }
+
+        /* GSAP Reveal Preparation */
+        .reveal-mask {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .reveal-text, .reveal-img-element, .reveal-fade {
+            visibility: hidden;
+        }
+
+        /* Keep hero video stable and cinematic */
+        .hero-video {
+            transform: scale(1.02);
+        }
+
+        /* Unified Signature Button System */
+        .btn-solid-premium,
+        .btn-ghost-premium,
+        .btn-outline-premium {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.95rem;
+            padding: 1rem 2rem;
+            border-radius: 2px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #E9C27E;
+            border: 1px solid rgba(195,154,82,0.55);
+            background: linear-gradient(180deg, rgba(20,14,10,0.62) 0%, rgba(11,10,12,0.78) 100%);
+            box-shadow: 0 14px 34px rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.03);
+            overflow: hidden;
+            transition: transform 0.55s var(--easing-standard), border-color 0.55s var(--easing-standard), color 0.55s var(--easing-standard), box-shadow 0.55s var(--easing-standard), background 0.55s var(--easing-standard);
+        }
+        .btn-solid-premium::before,
+        .btn-ghost-premium::before,
+        .btn-outline-premium::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(195,154,82,0.06) 0%, rgba(212,175,106,0.28) 45%, rgba(195,154,82,0.08) 100%);
+            opacity: 0;
+            transition: opacity 0.55s var(--easing-standard);
+        }
+        .btn-solid-premium:hover,
+        .btn-ghost-premium:hover,
+        .btn-outline-premium:hover {
+            color: #FFE1A8;
+            border-color: rgba(212,175,106,0.9);
+            background: linear-gradient(180deg, rgba(40,28,16,0.78) 0%, rgba(16,12,10,0.92) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.26), 0 0 0 1px rgba(212,175,106,0.18) inset;
+        }
+        .btn-solid-premium:hover::before,
+        .btn-ghost-premium:hover::before,
+        .btn-outline-premium:hover::before {
+            opacity: 1;
+        }
+        .btn-solid-premium span, .btn-solid-premium svg,
+        .btn-ghost-premium span, .btn-ghost-premium svg,
+        .btn-outline-premium span, .btn-outline-premium svg {
+            position: relative;
+            z-index: 1;
+            transition: color 0.55s var(--easing-standard);
+        }
+        .btn-arrow {
+            transition: transform 0.55s var(--easing-standard);
+        }
+        .btn-solid-premium:hover .btn-arrow,
+        .btn-ghost-premium:hover .btn-arrow,
+        .btn-outline-premium:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+        .btn-ghost-premium { padding: 0.9rem 1.35rem; font-size: 0.68rem; }
+
+        /* Form Inputs */
+        .input-premium {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.75rem;
+            color: #fff;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 0.875rem;
+            transition: border-color 0.5s var(--easing-standard);
+            border-radius: 0;
+        }
+        .input-premium:focus {
+            outline: none;
+            border-bottom-color: #C39A52;
+        }
+        .input-premium::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+        }
+
+
+        /* Signature cursor glow */
+        .cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 18px;
+            height: 18px;
+            border: 1px solid rgba(195,154,82,0.55);
+            border-radius: 9999px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 120;
+            opacity: 0;
+            transition: opacity 0.25s ease, transform 0.12s ease;
+            backdrop-filter: blur(1px);
+            box-shadow: 0 0 0 6px rgba(195,154,82,0.08), 0 0 24px rgba(195,154,82,0.18);
+            mix-blend-mode: screen;
+        }
+        .cursor-glow.is-active {
+            opacity: 1;
+        }
+        .cursor-glow.is-hover {
+            transform: translate(-50%, -50%) scale(1.6);
+            box-shadow: 0 0 0 10px rgba(195,154,82,0.10), 0 0 32px rgba(195,154,82,0.22);
+        }
+        .tap-ripple {
+            position: fixed;
+            width: 18px;
+            height: 18px;
+            border-radius: 9999px;
+            border: 1px solid rgba(195,154,82,0.55);
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.6);
+            opacity: 0.8;
+            z-index: 119;
+            animation: tapRipple 0.65s ease-out forwards;
+            box-shadow: 0 0 0 8px rgba(195,154,82,0.10);
+        }
+        @keyframes tapRipple {
+            to {
+                transform: translate(-50%, -50%) scale(3.2);
+                opacity: 0;
+            }
+        }
+        @media (hover: none), (pointer: coarse) {
+            .cursor-glow { display: none; }
+        }
+
+
+        @media (max-width: 1024px), (hover: none), (pointer: coarse) {
+            .cursor-glow,
+            .tap-ripple {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+        }
+
+        /* Horizontal Scroll Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Hero readability fixes */
+        .hero-video { animation: none !important; transform: scale(1.03); }
+        .hero-heading {
+            text-shadow: 0 6px 32px rgba(0,0,0,0.42);
+        }
+        .hero-kicker {
+            text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+        }
+        .nav-readable {
+            text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+        }
+
+        /* Portfolio reveal from bottom */
+        .portfolio-item {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+            will-change: opacity, transform;
+        }
+        .portfolio-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Outline button shares signature system above */
+
+        /* Legal modal + footer */
+        .legal-link {
+            color: #a1a1aa;
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+        .legal-link:hover { color: #C39A52; }
+        .legal-modal[hidden] { display: none; }
+        .legal-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(5,5,6,0.72);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .legal-modal__panel {
+            width: min(900px, 100%);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #111214;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+        }
+        .legal-modal__header {
+            position: sticky;
+            top: 0;
+            background: rgba(17,18,20,0.96);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .legal-modal__copy {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-color: rgba(195,154,82,0.45) rgba(255,255,255,0.05);
+        }
+        .legal-modal__copy::-webkit-scrollbar { width: 10px; }
+        .legal-modal__copy::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); }
+        .legal-modal__copy::-webkit-scrollbar-thumb { background: rgba(195,154,82,0.45); border-radius: 99px; }
+        .legal-modal__copy p {
+            color: #c7c7cf;
+            line-height: 1.85;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .legal-modal__copy h4 {
+            color: #fff;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin: 2rem 0 0.8rem;
+        }
+
+        /* Special Offer Popup */
+        .offer-popup[hidden] { display: none; }
+        .offer-popup {
+            position: fixed;
+            inset: 0;
+            z-index: 110;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: rgba(5,5,6,0.58);
+            backdrop-filter: blur(10px);
+        }
+        .offer-popup__panel {
+            width: min(680px, 100%);
+            background: linear-gradient(180deg, rgba(15,12,10,0.94) 0%, rgba(10,10,12,0.98) 100%);
+            border: 1px solid rgba(195,154,82,0.34);
+            border-radius: 10px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.42), inset 0 0 0 1px rgba(255,255,255,0.03);
+            overflow: hidden;
+            max-height: min(90vh, 760px);
+        }
+        .offer-popup__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+            margin-bottom: 0.5rem;
+        }
+        .offer-popup__field,
+        .offer-popup__cta {
+            min-width: 0;
+            width: 100%;
+        }
+        .offer-popup__cta {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .offer-popup__form .btn-solid-premium {
+            width: 100%;
+            min-width: 0;
+            justify-content: center;
+            min-height: 56px;
+            height: 56px;
+            padding: 0 1.25rem;
+            box-sizing: border-box;
+        }
+        .offer-popup__stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .offer-popup__benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .offer-popup__benefit {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .offer-popup__benefit::before {
+            content: '↗';
+            color: #C39A52;
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+        @media (max-width: 640px) {
+            .offer-popup__form {
+                grid-template-columns: 1fr;
+            }
+            .offer-popup__cta {
+                display: block;
+            }
+            .offer-popup__form .btn-solid-premium {
+                width: 100%;
+                min-width: 0;
+                height: auto;
+            }
+        }
+        .offer-popup__eyebrow {
+            font-size: 0.62rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #C39A52;
+            font-weight: 600;
+        }
+        .offer-popup__title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 0.98;
+            color: #f6f2ea;
+        }
+        .offer-popup__copy { color: #cfc8bc; line-height: 1.8; }
+
+        .offer-popup__benefits {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+        }
+        .offer-popup__benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: #e7d4ae;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .offer-popup__benefit::before {
+            content: '↗';
+            color: #C39A52;
+            line-height: 1;
+            transform: translateY(1px);
+        }
+
+        .offer-popup__label {
+            font-size: 0.62rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(231,212,174,0.7);
+            margin-bottom: 0.55rem;
+            display: block;
+        }
+        .offer-popup__input {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(195,154,82,0.28);
+            color: #f6f2ea;
+            padding: 0.95rem 1rem;
+            border-radius: 2px;
+            outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .offer-popup__input:focus {
+            border-color: rgba(212,175,106,0.8);
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 0 0 3px rgba(195,154,82,0.12);
+        }
+        .offer-popup__success {
+            color: #ead7ae;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin: 0.75rem 0 1.25rem;
+            display: none;
+        }
+        .offer-popup__success.is-visible { display: block; }
+        .offer-popup__postsuccess {
+            display: none;
+            margin-top: 1.25rem;
+        }
+        .offer-popup__postsuccess.is-visible {
+            display: block;
+        }
+        .offer-popup__error {
+            color: #ffcab2;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            min-height: 1.2rem;
+            margin-top: 0.25rem;
+        }
+        .offer-popup__dismiss-text {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0.15rem;
+            color: rgba(255,255,255,0.48);
+            font-size: 0.78rem;
+            line-height: 1.4;
+            text-decoration: none;
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+        .offer-popup__dismiss-text:hover {
+            color: #C39A52;
+        }
+        .offer-close {
+            width: 2.5rem; height: 2.5rem; display: inline-flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(195,154,82,0.35); color: #c9b189; background: rgba(255,255,255,0.02);
+            border-radius: 999px; transition: all 0.3s ease;
+        }
+        .offer-close:hover { border-color: rgba(212,175,106,0.8); color: #FFE1A8; background: rgba(195,154,82,0.1); }
+
+        /* Award-level enhancements */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            z-index: 80;
+            background: rgba(255,255,255,0.04);
+        }
+        .scroll-progress__bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(195,154,82,0.55) 0%, rgba(212,175,106,1) 100%);
+            box-shadow: 0 0 18px rgba(212,175,106,0.42);
+            transform-origin: left center;
+        }
+        .hero-scroll-cue {
+            position: absolute;
+            left: 50%;
+            bottom: 2rem;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(255,255,255,0.72);
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            font-size: 0.58rem;
+        }
+        .hero-scroll-cue__line {
+            width: 1px;
+            height: 52px;
+            background: linear-gradient(180deg, rgba(195,154,82,0) 0%, rgba(195,154,82,0.9) 50%, rgba(195,154,82,0) 100%);
+            animation: scrollCuePulse 2.2s ease-in-out infinite;
+        }
+        @keyframes scrollCuePulse {
+            0%, 100% { transform: scaleY(0.65); opacity: 0.45; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+        .contact-success {
+            display: none;
+            border: 1px solid rgba(195,154,82,0.22);
+            background: linear-gradient(180deg, rgba(24,19,14,0.78) 0%, rgba(15,15,18,0.9) 100%);
+            padding: 2rem;
+            border-radius: 2px;
+        }
+        .contact-success.is-visible { display: block; }
+        .contact-success__eyebrow {
+            font-size: 0.62rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #C39A52;
+            font-weight: 600;
+            margin-bottom: 0.9rem;
+        }
+        .contact-success__title {
+            color: #f6f2ea;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            line-height: 1.02;
+            margin-bottom: 1rem;
+        }
+        .contact-success__copy {
+            color: #d2ccbf;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        .portfolio-lightbox[hidden] { display: none; }
+        .portfolio-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 115;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.1rem;
+            background: rgba(6,6,8,0.82);
+            backdrop-filter: blur(16px);
+        }
+        .portfolio-lightbox__panel {
+            width: min(1040px, 100%);
+            max-height: 88vh;
+            overflow: hidden;
+            border: 1px solid rgba(195,154,82,0.24);
+            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(10,10,12,0.98) 0%, rgba(18,18,22,0.98) 100%);
+            box-shadow: 0 30px 90px rgba(0,0,0,0.45);
+            display: flex;
+            flex-direction: column;
+        }
+        .portfolio-lightbox__panel.is-portrait {
+            width: min(860px, 100%);
+        }
+        .portfolio-lightbox__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            flex-shrink: 0;
+        }
+        .portfolio-lightbox__label {
+            font-size: 0.62rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #C39A52;
+            font-weight: 600;
+        }
+        .portfolio-lightbox__image {
+            width: 100%;
+            height: min(48vh, 520px);
+            object-fit: contain;
+            object-position: center center;
+            background: #111;
+            display: block;
+            flex-shrink: 0;
+        }
+        .portfolio-lightbox__panel.is-portrait .portfolio-lightbox__image {
+            height: min(56vh, 640px);
+        }
+        .portfolio-lightbox__meta {
+            padding: 1.15rem 1.25rem 1.35rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            flex-shrink: 0;
+        }
+        .portfolio-lightbox__kicker {
+            font-size: 0.62rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #C39A52;
+            font-weight: 600;
+        }
+        .portfolio-lightbox__title {
+            font-family: 'Playfair Display', serif;
+            color: #f6f2ea;
+            font-size: clamp(2rem, 3vw, 3.2rem);
+            line-height: 0.98;
+        }
+        .portfolio-lightbox__copy {
+            color: #d3cec4;
+            line-height: 1.7;
+            max-width: 60rem;
+            font-size: 0.95rem;
+        }
+        @media (min-width: 900px) {
+            .portfolio-lightbox__meta {
+                padding: 1.25rem 1.45rem 1.5rem;
+            }
+        }
+        @media (max-width: 767px) {
+            .portfolio-lightbox {
+                padding: 0.85rem;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+            .portfolio-lightbox__panel {
+                max-height: calc(100dvh - 1.7rem);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .portfolio-lightbox__header {
+                padding: 0.95rem 1rem;
+            }
+            .portfolio-lightbox__image {
+                height: auto;
+                max-height: 54dvh;
+            }
+            .portfolio-lightbox__panel.is-portrait .portfolio-lightbox__image {
+                max-height: 58dvh;
+            }
+            .portfolio-lightbox__meta {
+                padding: 1rem 1rem 1.15rem;
+                gap: 0.5rem;
+            }
+            .portfolio-lightbox__title {
+                font-size: clamp(2rem, 8vw, 2.8rem);
+                line-height: 1.02;
+            }
+            .portfolio-lightbox__copy {
+                font-size: 0.94rem;
+                line-height: 1.65;
+            }
+        }
+
+        #testimonials-sticky {
+            box-sizing: border-box;
+        }
+        @media (min-width: 1024px) {
+            #testimonials-sticky {
+                justify-content: flex-start;
+                padding-top: clamp(6.5rem, 11vh, 8.5rem);
+                padding-bottom: 2.5rem;
+            }
+        }
+
+        .testimonial-card-enhanced {
+            width: min(74vw, 620px);
+            background: #1c1c1e;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            gap: 1.25rem;
+        }
+        .testimonial-card-enhanced__top {
+            display: grid;
+            grid-template-columns: 168px minmax(0, 1fr);
+            gap: 1.2rem;
+            align-items: center;
+        }
+        .testimonial-card-enhanced__image {
+            width: 168px;
+            height: 168px;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .testimonial-card-enhanced__meta {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .testimonial-card-enhanced__body {
+            padding: 0;
+        }
+        .testimonial-card-enhanced__quote {
+            color: #e4e4e7;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            letter-spacing: 0.01em;
+        }
+        .testimonial-card-enhanced__name {
+            color: #ffffff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            line-height: 1.05;
+            margin-bottom: 0.55rem;
+        }
+        .testimonial-card-enhanced__role {
+            color: #C39A52;
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            line-height: 1.7;
+        }
+        @media (max-width: 767px) {
+            #testimonials-sticky {
+                padding-top: 0.5rem;
+            }
+            .testimonial-card-enhanced {
+                width: 88vw;
+                padding: 1.15rem;
+                gap: 1rem;
+            }
+            .testimonial-card-enhanced__top {
+                grid-template-columns: 108px minmax(0, 1fr);
+                gap: 0.9rem;
+                align-items: start;
+            }
+            .testimonial-card-enhanced__image {
+                width: 108px;
+                height: 108px;
+            }
+            .testimonial-card-enhanced__quote {
+                font-size: 0.82rem;
+                line-height: 1.72;
+            }
+            .testimonial-card-enhanced__name {
+                font-size: 1.12rem;
+                margin-bottom: 0.35rem;
+            }
+            .testimonial-card-enhanced__role {
+                font-size: 0.56rem;
+                letter-spacing: 0.16em;
+            }
+        }
+
+    
+
+        /* Global card wow animation */
+        #services .grid > div,
+        .portfolio-card,
+        .testimonial-card-enhanced,
+        #contact form,
+        .contact-success {
+            transform-origin: center center;
+            transition: transform 0.55s var(--easing-standard), box-shadow 0.55s var(--easing-standard), border-color 0.55s var(--easing-standard), background 0.55s var(--easing-standard), filter 0.55s var(--easing-standard);
+            will-change: transform;
+        }
+        .portfolio-card,
+        .testimonial-card-enhanced,
+        #contact form,
+        .contact-success {
+            backface-visibility: hidden;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            #services .grid > div:hover,
+            .portfolio-card:hover,
+            .testimonial-card-enhanced:hover,
+            #contact form:hover,
+            .contact-success:hover {
+                transform: translateY(-10px) scale(1.03);
+                box-shadow: 0 26px 60px rgba(0,0,0,0.28), 0 0 0 1px rgba(212,175,106,0.16) inset;
+                border-color: rgba(212,175,106,0.35);
+                filter: saturate(1.04);
+            }
+            .portfolio-card:hover .img-zoom,
+            .testimonial-card-enhanced:hover .testimonial-card-enhanced__image {
+                transform: scale(1.03);
+                transform-origin: center center;
+            }
+        }
+        .testimonial-card-enhanced__image {
+            transition: transform 0.65s var(--easing-standard), filter 0.65s var(--easing-standard);
+        }
+        .portfolio-card .img-zoom {
+            object-position: center center;
+            transform-origin: center center;
+        }
+        .card-mobile-spotlight {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 22px 48px rgba(0,0,0,0.24), 0 0 0 1px rgba(212,175,106,0.12) inset;
+            border-color: rgba(212,175,106,0.28) !important;
+            filter: saturate(1.03);
+        }
+        .card-mobile-spotlight .img-zoom,
+        .card-mobile-spotlight .testimonial-card-enhanced__image {
+            transform: scale(1.02);
+            transform-origin: center center;
+        }
+        @media (max-width: 767px) {
+            #services .grid > div,
+            .portfolio-card,
+            .testimonial-card-enhanced,
+            #contact form,
+            .contact-success {
+                transition: transform 0.45s var(--easing-standard), box-shadow 0.45s var(--easing-standard), border-color 0.45s var(--easing-standard), filter 0.45s var(--easing-standard);
+            }
+            .testimonial-card-enhanced {
+                width: 90vw;
+            }
+            .testimonial-card-enhanced__top {
+                grid-template-columns: 96px minmax(0, 1fr);
+                gap: 0.85rem;
+            }
+            .testimonial-card-enhanced__image {
+                width: 96px;
+                height: 96px;
+            }
+        }
+
+        /* Layout polish fixes */
+        #services .grid > div {
+            padding-top: 3.25rem;
+            padding-bottom: 3.25rem;
+            padding-left: 1.85rem;
+            padding-right: 1.85rem;
+            overflow: visible;
+        }
+        @media (min-width: 1024px) {
+            #services .grid > div:first-child { padding-left: 1.6rem; }
+            #services .grid > div:last-child { padding-right: 1.6rem; }
+        }
+
+        /* Testimonials mobile refinement */
+        @media (max-width: 767px) {
+            #testimonials-pin {
+                padding-top: 4.5rem;
+                padding-bottom: 4rem;
+            }
+            #testimonials-sticky {
+                justify-content: flex-start;
+                padding-top: 0;
+                height: auto;
+            }
+            #testimonials-pin .reveal-mask + .reveal-mask h2,
+            #testimonials-pin h2 {
+                font-size: 2.75rem;
+                line-height: 0.95;
+            }
+            .testimonial-card-enhanced {
+                width: calc(100vw - 2rem);
+                max-width: 100%;
+                padding: 1rem;
+                gap: 0.9rem;
+                margin-right: 0.25rem;
+            }
+            .testimonial-card-enhanced__top {
+                grid-template-columns: 88px minmax(0, 1fr);
+                gap: 0.85rem;
+                align-items: center;
+            }
+            .testimonial-card-enhanced__image {
+                width: 88px;
+                height: 88px;
+            }
+            .testimonial-card-enhanced__name {
+                font-size: 1rem;
+                line-height: 1.05;
+                margin-bottom: 0.3rem;
+            }
+            .testimonial-card-enhanced__role {
+                font-size: 0.52rem;
+                line-height: 1.5;
+                letter-spacing: 0.13em;
+            }
+            .testimonial-card-enhanced__quote {
+                font-size: 0.78rem;
+                line-height: 1.58;
+            }
+        }
+
+
+        /* Portfolio card spacing + brighter hover */
+        .portfolio-card {
+            align-self: start;
+        }
+        .portfolio-card > .flex,
+        .portfolio-card > .text-center,
+        .portfolio-card > div:last-child {
+            padding-left: 1.15rem;
+            padding-right: 1.15rem;
+            padding-bottom: 1rem;
+            box-sizing: border-box;
+        }
+        .portfolio-card > .img-wrapper {
+            width: calc(100% - 0.8rem);
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .portfolio-card:hover {
+                filter: brightness(1.05) saturate(1.06);
+            }
+            .portfolio-card:hover .img-zoom {
+                filter: brightness(1.1);
+            }
+        }
+        @media (max-width: 767px) {
+            .portfolio-card > .flex,
+            .portfolio-card > .text-center,
+            .portfolio-card > div:last-child {
+                padding-left: 0.85rem;
+                padding-right: 0.85rem;
+                padding-bottom: 0.9rem;
+            }
+            .portfolio-card > .img-wrapper {
+                width: calc(100% - 0.4rem);
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 0.8rem;
+            }
+        }
+
+        /* Desktop popup: remove bottom dead space and keep panel tighter */
+        @media (min-width: 768px) {
+            .offer-popup {
+                align-items: flex-start;
+                overflow-y: auto;
+                padding-top: clamp(1rem, 4vh, 2.25rem);
+                padding-bottom: clamp(1rem, 4vh, 2rem);
+            }
+            .offer-popup__panel {
+                max-height: none;
+                margin: 0 auto;
+            }
+            .offer-popup__panel > div:last-child {
+                padding-top: 2rem !important;
+                padding-bottom: 1rem !important;
+            }
+            .offer-popup__benefits {
+                margin-bottom: 1.4rem !important;
+            }
+            #offerLeadForm {
+                margin-bottom: 0.35rem !important;
+            }
+            .offer-popup__dismiss-text {
+                margin-top: 0.35rem;
+            }
+        }
+
+        /* Popup fit on mobile without vertical shift */
+        @media (max-width: 767px) {
+            .offer-popup {
+                align-items: flex-start;
+                justify-content: center;
+                padding: max(0.5rem, env(safe-area-inset-top)) 0.75rem 0.75rem;
+                overflow-y: auto;
+            }
+            .offer-popup__panel {
+                width: 100%;
+                max-height: calc(100dvh - max(1rem, env(safe-area-inset-top)) - 0.75rem);
+                border-radius: 8px;
+                margin: 0;
+                transform: none !important;
+            }
+            .offer-popup__panel > div:first-child {
+                padding: 0.95rem 1rem 0.85rem;
+                align-items: flex-start;
+            }
+            .offer-popup__panel > div:last-child {
+                padding: 0.95rem 1rem 1rem;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .offer-popup__title {
+                font-size: clamp(2rem, 9vw, 3rem);
+                line-height: 0.94;
+                max-width: 11ch;
+            }
+            .offer-popup__copy {
+                font-size: 0.95rem;
+                line-height: 1.58;
+                margin-bottom: 0.95rem;
+            }
+            .offer-popup__benefits {
+                margin-bottom: 0.95rem;
+                gap: 0.65rem;
+            }
+            .offer-popup__benefit {
+                font-size: 0.72rem;
+                letter-spacing: 0.06em;
+            }
+            .offer-popup__form {
+                gap: 0.8rem;
+                margin-bottom: 0.25rem;
+            }
+            .offer-popup__label {
+                margin-bottom: 0.45rem;
+            }
+            .offer-popup__input,
+            .offer-popup__form .btn-solid-premium {
+                min-height: 48px;
+                height: 48px;
+            }
+            .offer-popup__dismiss-text {
+                margin-top: 0;
+            }
+            .offer-close {
+                width: 2.25rem;
+                height: 2.25rem;
+                flex-shrink: 0;
+            }
+        }
+
+
+        /* Mobile hero visibility + testimonials swipe fix */
+        @media (max-width: 767px) {
+            .hero-kicker.reveal-text,
+            .hero-heading .reveal-text,
+            .hero-heading.reveal-text,
+            .hero .reveal-mask .reveal-text {
+                visibility: visible !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .hero-heading {
+                font-size: clamp(2.85rem, 13vw, 4.4rem) !important;
+                line-height: 0.94;
+                margin-bottom: 1rem !important;
+                max-width: 10.5rem;
+            }
+            .hero-kicker {
+                font-size: 0.66rem !important;
+                letter-spacing: 0.22em;
+                margin-bottom: 0.9rem;
+            }
+            .hero-scroll-cue {
+                bottom: 1.35rem;
+            }
+            #testimonials-pin {
+                overflow: hidden;
+            }
+            #testimonials-pin > div,
+            #testimonials-sticky {
+                overflow: visible;
+            }
+            #testimonials-track {
+                display: flex;
+                width: max-content;
+                gap: 0.9rem !important;
+                padding-right: 1.25rem;
+            }
+            #testimonials-pin .overflow-x-auto {
+                overflow-x: auto !important;
+                overflow-y: visible;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                padding-right: 1rem;
+                touch-action: pan-x;
+                overscroll-behavior-x: contain;
+            }
+            .testimonial-card-enhanced {
+                width: 84vw;
+                min-width: 84vw;
+                scroll-snap-align: start;
+            }
+        }
+
+
+        /* Softer hover scale so cards don't feel clipped */
+        @media (hover: hover) and (pointer: fine) {
+            #services .grid > div:hover,
+            .portfolio-card:hover,
+            .testimonial-card-enhanced:hover,
+            #contact form:hover,
+            .contact-success:hover {
+                transform: translateY(-8px) scale(1.018);
+            }
+        }
+
+
+        @media (max-width: 767px) {
+            .hero-content-shell {
+                min-height: 100%;
+                max-width: none;
+                justify-content: flex-end;
+                align-items: center;
+                text-align: center;
+                padding-top: 6rem;
+                padding-bottom: 5.5rem;
+            }
+            .hero-content-shell .reveal-mask {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+            .hero-content-shell .btn-solid-premium {
+                padding-left: 1.1rem;
+                padding-right: 1.1rem;
+                min-height: 46px;
+            }
+            .hero-heading {
+                max-width: 14rem !important;
+                margin-bottom: 0.85rem !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+            .hero-kicker {
+                max-width: 100%;
+                width: 100%;
+                text-align: center !important;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-scroll-cue {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            #testimonials-pin {
+                overflow: visible !important;
+            }
+            #testimonials-pin > div,
+            #testimonials-sticky {
+                overflow: visible !important;
+                position: relative !important;
+                height: auto !important;
+                min-height: 0 !important;
+            }
+            #testimonials-sticky {
+                padding-bottom: 2rem;
+            }
+            #testimonials-pin .overflow-x-auto {
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-x !important;
+                overscroll-behavior-x: contain;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none;
+                padding-left: 0.25rem;
+                padding-right: 1.5rem;
+                cursor: grab;
+            }
+            #testimonials-pin .overflow-x-auto::-webkit-scrollbar {
+                display: none;
+            }
+            #testimonials-track {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                width: max-content !important;
+                min-width: max-content !important;
+                gap: 1rem !important;
+                padding-right: 2rem !important;
+            }
+            .testimonial-card-enhanced {
+                width: 88vw !important;
+                min-width: 88vw !important;
+                max-width: 88vw !important;
+                scroll-snap-align: start;
+                flex-shrink: 0;
+            }
+        }
+
+
+    
+        /* Mobile polish fixes */
+        @media (max-width: 767px) {
+            .offer-popup__dismiss-text {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                text-align: center;
+                margin-top: 0.35rem;
+            }
+            .hero-content-shell {
+                padding-bottom: 7.25rem;
+                align-items: center;
+                text-align: center;
+            }
+            .hero-content-shell .btn-solid-premium {
+                margin-top: 1rem;
+                margin-bottom: 2.5rem;
+                position: relative;
+                z-index: 2;
+            }
+            .hero-heading {
+                margin-bottom: 1.35rem !important;
+            }
+            .hero-content-shell .reveal-mask,
+            .hero-content-shell p,
+            .hero-content-shell h1 {
+                text-align: center;
+            }
+            .hero-scroll-cue {
+                bottom: 0.9rem;
+                gap: 0.4rem;
+            }
+            .hero-scroll-cue__line {
+                height: 28px;
+            }
+            #testimonials-sticky {
+                padding-top: 2.25rem !important;
+                padding-bottom: 1.4rem !important;
+            }
+            #testimonials-pin .relative.top-auto.left-auto.z-10 {
+                margin-bottom: 1rem !important;
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+                pointer-events: auto;
+            }
+            #testimonials-pin .relative.top-auto.left-auto.z-10 .reveal-mask {
+                display: block;
+            }
+            #testimonials-pin .relative.top-auto.left-auto.z-10 h2 {
+                margin-top: 0.2rem;
+                font-size: clamp(2.5rem, 12vw, 4rem);
+                line-height: 0.95;
+            }
+            .testimonials-mobile-nav {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0 1.5rem 1rem;
+            }
+            .testimonials-mobile-nav__hint {
+                color: rgba(255,255,255,0.54);
+                font-size: 0.65rem;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+            }
+            #testimonials-pin .overflow-x-auto {
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+            #testimonials-track {
+                gap: 0.9rem !important;
+                padding-right: 1rem !important;
+            }
+            .testimonial-card-enhanced {
+                width: 84vw !important;
+                min-width: 84vw !important;
+                max-width: 84vw !important;
+            }
+        }
+        @media (min-width: 768px) {
+            .testimonials-mobile-nav { display: none; }
+        }
+
+
+        /* Final mobile philosophy fix */
+        @media (max-width: 767px) {
+            #about {
+                background: #F7F6F3 !important;
+            }
+            #about .mb-12 {
+                margin-bottom: 2rem !important;
+            }
+            #about .mb-12 h2 {
+                font-size: clamp(2.15rem, 10.6vw, 3.1rem) !important;
+                line-height: 1.03 !important;
+                letter-spacing: -0.02em;
+                max-width: 11ch;
+                color: #121214 !important;
+            }
+            #about .mb-12 h2 span {
+                display: block;
+                margin-top: 0.1rem;
+                white-space: nowrap;
+                color: rgba(70, 66, 78, 0.78) !important;
+            }
+            #about .mb-12 p {
+                color: rgba(18, 18, 20, 0.68) !important;
+                max-width: 100% !important;
+            }
+            #about .border-thin-t-dark,
+            #about .border-thin-b-dark {
+                border-color: rgba(0,0,0,0.12) !important;
+            }
+            #about button span.font-serif {
+                color: #121214 !important;
+            }
+        }
+
+
+        /* Mobile performance + contrast fixes */
+        .hero-media-layer {
+            background-image: none;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        @media (max-width: 767px) {
+            .hero-media-layer {
+                background-image: url('https://res.cloudinary.com/dpdxexznv/video/upload/so_0/v1774974030/video_ivjjqz.jpg');
+            }
+            .hero-video {
+                display: none !important;
+            }
+            #contact .text-zinc-500,
+            #contact .text-zinc-600 {
+                color: #a1a1aa !important;
+            }
+            #contact .text-zinc-500.font-semibold,
+            #contact .text-zinc-600.font-medium,
+            #contact .legal-link,
+            #contact .input-premium::placeholder {
+                color: #d4d4d8 !important;
+            }
+        }
+        #contact .text-zinc-500.font-semibold,
+        #contact .text-zinc-600.font-medium {
+            color: #d4d4d8;
+        }
+        #contact .mt-3.text-sm.text-zinc-500 {
+            color: #c4c4cc;
+        }
+        #contact .text-zinc-600.text-[10px] {
+            color: #cfcfd6;
+        }
+
+</style>
+<meta content="Luxury architecture and real estate advisory in Miami, featuring curated properties, editorial design, and private consultations with ELARA." name="description"/><meta content="ELARA | Premium Architecture &amp; Real Estate" property="og:title"/><meta content="Luxury architecture and real estate advisory in Miami, featuring curated properties, editorial design, and private consultations with ELARA." property="og:description"/><!-- TODO: replace og:image with a real 1200x630 preview image --><meta content="https://example.com/og-image-1200x630.jpg" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><!-- TODO: replace og:url with your real deployed https:// URL --><meta content="https://example.com" property="og:url"/><meta content="website" property="og:type"/><meta content="summary_large_image" name="twitter:card"/><meta content="ELARA | Premium Architecture &amp; Real Estate" name="twitter:title"/><meta content="Luxury architecture and real estate advisory in Miami, featuring curated properties, editorial design, and private consultations with ELARA." name="twitter:description"/><meta content="https://example.com/og-image-1200x630.jpg" name="twitter:image"/><link href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%278%27 fill=%27%23070708%27/%3E%3Cpath d=%27M32 10L14 54h36L32 10zm0 10.5L40.5 40h-17L32 20.5z%27 fill=%27%23C39A52%27/%3E%3C/svg%3E" rel="icon" type="image/svg+xml"/><!-- Optional: replace embedded SVG favicon with a real /favicon.ico later if needed --><link href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 180 180%27%3E%3Crect width=%27180%27 height=%27180%27 rx=%2722%27 fill=%27%23070708%27/%3E%3Cpath d=%27M90 28L38 152h104L90 28zm0 30.5L114.5 110h-49L90 58.5z%27 fill=%27%23C39A52%27/%3E%3C/svg%3E" rel="apple-touch-icon"/><!-- GA4: insert tag here --><!-- Meta Pixel: insert here --></head>
+<body class="antialiased selection:bg-bronze selection:text-dark">
+<div aria-hidden="true" class="cursor-glow" id="cursorGlow"></div>
+<div aria-hidden="true" class="scroll-progress"><div class="scroll-progress__bar" id="scrollProgressBar"></div></div>
+<!-- Ambient Lighting -->
+<div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-bronze/5 rounded-full blur-[150px] pointer-events-none z-0"></div>
+<!-- Navigation -->
+<nav :class="{ 'bg-dark/80 backdrop-blur-xl border-thin-b py-5': scrolled, 'bg-transparent py-8': !scrolled }" @scroll.window="scrolled = (window.pageYOffset &gt; 50)" class="fixed w-full top-0 z-50 transition-all duration-700 ease-out" x-data="{ mobileMenuOpen: false, scrolled: false }">
+<div class="max-w-[90rem] mx-auto px-6 md:px-12 flex justify-between items-center">
+<a aria-label="ELARA home" class="text-xl font-medium tracking-editorial-wide text-white uppercase flex items-center gap-4 group gs-reveal nav-readable" href="#">
+<svg class="w-5 h-5 text-bronze transform transition-transform duration-700 group-hover:rotate-180" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 6l5 10H7l5-10z"></path></svg>
+                ELARA
+            </a>
+<!-- Desktop Menu -->
+<div class="hidden md:flex items-center gap-12 gs-reveal nav-readable">
+<div class="flex space-x-10 text-[10px] font-medium tracking-editorial-wide text-zinc-200/85 uppercase">
+<a class="hover:text-white transition-colors duration-500" href="#services">Expertise</a>
+<a class="hover:text-white transition-colors duration-500" href="#portfolio">Portfolio</a>
+<a class="hover:text-white transition-colors duration-500" href="#about">Philosophy</a>
+<a class="hover:text-white transition-colors duration-500" href="#testimonials-pin">Clients</a>
+</div>
+<a class="btn-solid-premium text-[10px] px-7 py-3" href="#contact">
+                    Inquire
+                </a>
+</div>
+<!-- Mobile Menu Toggle -->
+<button @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Open mobile menu" class="md:hidden text-white focus:outline-none z-50 relative gs-reveal nav-readable" type="button">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="square" stroke-linejoin="miter"></path>
+</svg>
+</button>
+</div>
+<!-- Mobile Menu Dropdown -->
+<div class="absolute top-0 left-0 w-full h-screen bg-dark/95 backdrop-blur-3xl flex flex-col items-center justify-center space-y-10 md:hidden z-40" x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-700" x-transition:enter-end="opacity-100 translate-y-0" x-transition:enter-start="opacity-0 translate-y-[-10%]" x-transition:leave="transition ease-in duration-500" x-transition:leave-end="opacity-0 translate-y-[-10%]" x-transition:leave-start="opacity-100 translate-y-0">
+<a @click="mobileMenuOpen = false" class="text-sm font-medium tracking-editorial-wide text-white uppercase" href="#services">Expertise</a>
+<a @click="mobileMenuOpen = false" class="text-sm font-medium tracking-editorial-wide text-white uppercase" href="#portfolio">Portfolio</a>
+<a @click="mobileMenuOpen = false" class="text-sm font-medium tracking-editorial-wide text-white uppercase" href="#about">Philosophy</a>
+<a @click="mobileMenuOpen = false" class="text-sm font-medium tracking-editorial-wide text-white uppercase" href="#testimonials-pin">Clients</a>
+<a @click="mobileMenuOpen = false" class="btn-solid-premium text-xs px-10 py-4 mt-4" href="#contact">Inquire</a>
+</div>
+</nav>
+<!-- 1. Hero Section -->
+<section class="relative h-screen flex flex-col items-center justify-center overflow-hidden z-10">
+<!-- Cinematic Background Video with Soft Gradient Overlay -->
+<div class="absolute inset-0 z-0 hero-media-layer">
+<!-- Balanced cinematic overlay for readable hero text -->
+<div class="absolute inset-0 bg-gradient-to-b from-dark/62 via-dark/28 to-dark/66 z-10"></div>
+<div class="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.16)_0%,rgba(0,0,0,0)_42%)]"></div>
+<video aria-hidden="true" autoplay="" class="w-full h-full object-cover object-center hero-video" loop="" muted="" playsinline="" poster="https://res.cloudinary.com/dpdxexznv/video/upload/so_0/v1774974030/video_ivjjqz.jpg" preload="metadata">
+<source src="https://res.cloudinary.com/dpdxexznv/video/upload/v1774974030/video_ivjjqz.mp4" type="video/mp4"/>
+</video>
+</div>
+<!-- Controlled, Elegant Centered Text -->
+<div class="hero-content-shell relative z-20 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
+<div class="reveal-mask mb-6">
+<p class="reveal-text hero-kicker text-bronze tracking-editorial-wide text-[10px] md:text-xs uppercase font-medium">
+                    Miami &amp; Global Real Estate
+                </p>
+</div>
+<h1 class="hero-heading text-5xl md:text-7xl lg:text-[6rem] font-serif font-medium tracking-tight heading-display text-white mb-12">
+<div class="reveal-mask pb-2"><span class="block reveal-text">Vision Meets</span></div>
+<div class="reveal-mask"><span class="block reveal-text italic font-light text-white/90">Structure.</span></div>
+</h1>
+<!-- Premium Solid Designer Button -->
+<div class="reveal-mask mt-4">
+<a class="reveal-text btn-solid-premium shadow-2xl shadow-black/50" href="#portfolio">
+<span>Explore Portfolio</span>
+<svg class="w-4 h-4 btn-arrow" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="square" stroke-linejoin="miter"></path></svg>
+</a>
+</div>
+</div>
+<a class="hero-scroll-cue" href="#services">
+<span>Scroll</span>
+<span aria-hidden="true" class="hero-scroll-cue__line"></span>
+</a>
+</section>
+<!-- 2. Services Section (Editorial Warm Light Theme) -->
+<section class="py-32 lg:py-48 relative z-10 bg-alabaster text-dark" id="services">
+<div class="max-w-[90rem] mx-auto px-6 md:px-12">
+<!-- Section Header -->
+<div class="mb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+<div class="max-w-2xl">
+<div class="reveal-mask mb-6">
+<p class="reveal-text text-bronze tracking-editorial-wide text-[10px] uppercase font-semibold">Our Expertise</p>
+</div>
+<h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium heading-display text-dark">
+<div class="reveal-mask pb-2"><span class="block reveal-text">Mastering the</span></div>
+<div class="reveal-mask"><span class="block reveal-text italic text-zinc-500 font-light">Art of the Deal.</span></div>
+</h2>
+</div>
+<div class="reveal-mask max-w-sm">
+<p class="reveal-text text-zinc-600 font-normal text-sm leading-loose tracking-wide">
+                        Comprehensive luxury real estate services tailored for the world's most discerning clientele, combining absolute discretion with rigorous market intelligence.
+                    </p>
+</div>
+</div>
+<!-- Controlled Editorial Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-thin-t-dark">
+<!-- 01 -->
+<div class="py-12 lg:pr-10 border-thin-b-dark lg:border-b-0 lg:border-r border-zinc-200 gs-reveal">
+<div class="text-[10px] text-bronze font-semibold tracking-editorial mb-8">01</div>
+<h3 class="text-xl font-serif font-medium mb-4 text-dark">Buyer Representation</h3>
+<p class="text-xs text-zinc-500 font-normal leading-loose tracking-wide">Securing off-market masterpieces and premium waterfront estates before they reach the public eye.</p>
+</div>
+<!-- 02 -->
+<div class="py-12 lg:px-10 border-thin-b-dark lg:border-b-0 lg:border-r border-zinc-200 gs-reveal">
+<div class="text-[10px] text-bronze font-semibold tracking-editorial mb-8">02</div>
+<h3 class="text-xl font-serif font-medium mb-4 text-dark">Seller Strategy</h3>
+<p class="text-xs text-zinc-500 font-normal leading-loose tracking-wide">Global marketing campaigns, discreet staging, and data-driven pricing to maximize property value.</p>
+</div>
+<!-- 03 -->
+<div class="py-12 lg:px-10 border-thin-b-dark lg:border-b-0 lg:border-r border-zinc-200 gs-reveal">
+<div class="text-[10px] text-bronze font-semibold tracking-editorial mb-8">03</div>
+<h3 class="text-xl font-serif font-medium mb-4 text-dark">Investment Advisory</h3>
+<p class="text-xs text-zinc-500 font-normal leading-loose tracking-wide">Identifying high-yield opportunities in rapidly evolving commercial and luxury residential sectors.</p>
+</div>
+<!-- 04 -->
+<div class="py-12 lg:pl-10 gs-reveal">
+<div class="text-[10px] text-bronze font-semibold tracking-editorial mb-8">04</div>
+<h3 class="text-xl font-serif font-medium mb-4 text-dark">Relocation Concierge</h3>
+<p class="text-xs text-zinc-500 font-normal leading-loose tracking-wide">A seamless transition experience, handling logistics, lifestyle integration, and legal networks.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Case Studies (Asymmetric Editorial Grid) -->
+<section class="py-32 lg:py-48 relative z-10 bg-charcoal" id="portfolio">
+<div class="max-w-[90rem] mx-auto px-6 md:px-12">
+<!-- Section Header -->
+<div class="mb-24 flex flex-col items-center text-center">
+<div class="reveal-mask mb-6">
+<p class="reveal-text text-bronze tracking-editorial-wide text-[10px] uppercase font-medium">The Proof</p>
+</div>
+<h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium heading-display text-white">
+<div class="reveal-mask pb-2"><span class="block reveal-text">Architectural</span></div>
+<div class="reveal-mask"><span class="block reveal-text italic text-zinc-400 font-light">Triumphs.</span></div>
+</h2>
+</div>
+<!-- Elevated Editorial Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+<!-- Item 1: Large Left -->
+<div class="portfolio-card md:col-span-7 group cursor-pointer flex flex-col reveal-image" tabindex="0">
+<div class="img-wrapper aspect-[4/3] md:aspect-[4/5] mb-6 bg-surface w-full rounded-[2px]">
+<img alt="Star Island Estate" class="w-full h-full object-cover img-zoom gs-parallax" data-speed="auto" decoding="async" height="800" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774878829/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_7_efmiu3.png" width="1200"/>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h3 class="text-2xl font-serif font-medium mb-2 text-white">Star Island Estate</h3>
+<p class="text-xs text-zinc-400 font-medium tracking-editorial uppercase">Sold in 12 Days</p>
+</div>
+<p class="text-sm text-zinc-500 font-normal leading-loose max-w-xs md:text-right">Closed at $42.5M — 15% above asking price, setting a new neighborhood record.</p>
+</div>
+</div>
+<!-- Item 2: Small Right (Pushed Down) -->
+<div class="portfolio-card md:col-span-5 group cursor-pointer flex flex-col md:mt-32 reveal-image" tabindex="0">
+<div class="img-wrapper aspect-square mb-6 bg-surface w-full rounded-[2px]">
+<img alt="Coral Gables Manor" class="w-full h-full object-cover img-zoom gs-parallax" data-speed="auto" decoding="async" height="800" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774878830/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_9_ndubhu.png" width="1200"/>
+</div>
+<div class="flex flex-col">
+<h3 class="text-xl font-serif font-medium mb-2 text-white">Coral Gables Manor</h3>
+<p class="text-[10px] text-bronze font-medium tracking-editorial uppercase mb-4">Sold in 8 Days</p>
+<p class="text-sm text-zinc-500 font-normal leading-loose">A historic yet modernized estate. Closed at $14.5M — setting an unprecedented price-per-square-foot.</p>
+</div>
+</div>
+<!-- Item 3: Small Left -->
+<div class="portfolio-card md:col-span-5 group cursor-pointer flex flex-col md:mt-16 reveal-image" tabindex="0">
+<div class="img-wrapper aspect-[3/4] mb-6 bg-surface w-full rounded-[2px]">
+<img alt="Palm Island Villa" class="w-full h-full object-cover img-zoom gs-parallax" data-speed="auto" decoding="async" height="800" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774878830/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_8_ulrzy2.png" width="1200"/>
+</div>
+<div class="flex flex-col">
+<h3 class="text-xl font-serif font-medium mb-2 text-white">Palm Island Villa</h3>
+<p class="text-[10px] text-bronze font-medium tracking-editorial uppercase mb-4">Turnkey Delivery</p>
+<p class="text-sm text-zinc-500 font-normal leading-loose">Represented the seller. Orchestrated full staging and sold for $28M to a cash buyer.</p>
+</div>
+</div>
+<!-- Item 4: Large Right -->
+<div class="portfolio-card md:col-span-7 group cursor-pointer flex flex-col reveal-image" tabindex="0">
+<div class="img-wrapper aspect-[4/3] md:aspect-[16/9] mb-6 bg-surface w-full rounded-[2px]">
+<img alt="Brickell Sky Penthouse" class="w-full h-full object-cover img-zoom gs-parallax" data-speed="auto" decoding="async" height="800" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774878984/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_10_rkocuo.png" width="1200"/>
+</div>
+<div class="flex flex-col">
+<h3 class="text-2xl font-serif font-medium mb-2 text-white">Brickell Sky Penthouse</h3>
+<p class="text-[10px] text-bronze font-medium tracking-editorial uppercase mb-4">Off-Market Acquisition</p>
+<p class="text-sm text-zinc-500 font-normal leading-loose max-w-md">Secured for an international investor before public listing. $18.2M.</p>
+</div>
+</div>
+<!-- Item 5: Wide Horizontal Center -->
+<div class="portfolio-card md:col-span-12 group cursor-pointer flex flex-col md:mt-24 reveal-image" tabindex="0">
+<div class="img-wrapper aspect-video md:aspect-[21/9] mb-6 bg-surface w-full rounded-[2px]">
+<img alt="Sunny Isles Penthouse" class="w-full h-full object-cover img-zoom gs-parallax" data-speed="auto" decoding="async" height="800" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774879311/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_11_n7znvh.png" width="1200"/>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h3 class="text-2xl font-serif font-medium mb-2 text-white">Sunny Isles Penthouse</h3>
+<p class="text-xs text-zinc-400 font-medium tracking-editorial uppercase">Record-Breaking Price</p>
+</div>
+<p class="text-sm text-zinc-500 font-normal leading-loose max-w-md md:text-right">Oceanfront triplex secured for $32M. Orchestrated a highly competitive bidding war globally.</p>
+</div>
+</div>
+<!-- Item 6: Small Centered below -->
+<div class="portfolio-card md:col-span-6 md:col-start-4 group cursor-pointer flex flex-col mt-12 md:mt-24 reveal-image text-center items-center pb-4 md:pb-6" tabindex="0">
+<div class="img-wrapper aspect-[4/5] mb-6 bg-surface w-full rounded-[2px]">
+<img alt="Design District Loft" class="w-full h-full object-cover img-zoom gs-parallax" data-speed="auto" decoding="async" height="800" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774880247/design_district_loft_4x5_bgr1ql.jpg" width="1200"/>
+</div>
+<h3 class="text-xl font-serif font-medium mb-2 text-white">Design District Loft</h3>
+<p class="text-[10px] text-bronze font-medium tracking-editorial uppercase mb-4">Off-Market Deal</p>
+<p class="text-sm text-zinc-500 font-normal leading-loose">Exclusive architectural masterpiece. Acquired for a high-profile art collector in absolute secrecy.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. About ELARA (Editorial Stone Theme) -->
+<section class="py-32 lg:py-48 relative z-10 bg-alabaster text-dark" id="about">
+<div class="max-w-[90rem] mx-auto px-6 md:px-12">
+<!-- Two Column Layout -->
+<div class="flex flex-col lg:flex-row gap-20 items-center">
+<!-- Left: Elegant Framed Image -->
+<div class="w-full lg:w-5/12 relative reveal-image">
+<div class="img-wrapper aspect-[3/4] rounded-[2px] overflow-hidden shadow-xl">
+<img alt="Modern Architecture" class="w-full h-full object-cover img-zoom gs-parallax" data-speed="auto" decoding="async" height="800" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774874898/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_zeqf9h.png" width="1200"/>
+</div>
+</div>
+<!-- Right: Philosophy Text & Minimalist Accordion -->
+<div class="w-full lg:w-7/12 lg:pl-12" x-data="{ active: 1 }">
+<div class="mb-12 gs-reveal">
+<p class="text-[10px] text-bronze font-semibold tracking-editorial-wide uppercase mb-6">Philosophy</p>
+<h2 class="text-3xl md:text-5xl font-serif font-medium leading-tight text-dark mb-8">
+                            Great architecture starts with asking the <span class="italic text-zinc-500 font-light">right questions.</span>
+</h2>
+<p class="text-zinc-600 font-normal leading-loose tracking-wide text-sm">
+                            Every project begins with people. We combine precision market engineering with artistic intuition — curating homes that feel as extraordinary as they look.
+                        </p>
+</div>
+<!-- Refined Accordion -->
+<div class="flex flex-col w-full border-thin-t-dark gs-reveal">
+<!-- Item 1 -->
+<div class="border-thin-b-dark">
+<button @click="active !== 1 ? active = 1 : active = null" class="w-full text-left py-6 flex justify-between items-center focus:outline-none group" type="button">
+<span :class="active === 1 ? 'text-bronze' : 'text-zinc-900'" class="font-serif font-medium text-lg md:text-xl tracking-wide transition-colors duration-400 group-hover:text-bronze">Why minimalism?</span>
+<span :class="active === 1 ? 'rotate-180' : ''" class="text-xs text-zinc-500 font-light transition-transform duration-500">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path :d="active === 1 ? 'M20 12H4' : 'M12 4v16m8-8H4'" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5"></path></svg>
+</span>
+</button>
+<div x-collapse="" x-show="active === 1">
+<div class="pb-8 text-zinc-600 font-normal text-sm leading-loose pr-8 tracking-wide">
+                                    We champion spaces that breathe. True luxury is the absence of the unnecessary, allowing natural light, structural integrity, and the surrounding environment to take center stage.
+                                </div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="border-thin-b-dark">
+<button @click="active !== 2 ? active = 2 : active = null" class="w-full text-left py-6 flex justify-between items-center focus:outline-none group" type="button">
+<span :class="active === 2 ? 'text-bronze' : 'text-zinc-900'" class="font-serif font-medium text-lg md:text-xl tracking-wide transition-colors duration-400 group-hover:text-bronze">How do we choose materials?</span>
+<span :class="active === 2 ? 'rotate-180' : ''" class="text-xs text-zinc-500 font-light transition-transform duration-500">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path :d="active === 2 ? 'M20 12H4' : 'M12 4v16m8-8H4'" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5"></path></svg>
+</span>
+</button>
+<div x-collapse="" x-show="active === 2">
+<div class="pb-8 text-zinc-600 font-normal text-sm leading-loose pr-8 tracking-wide">
+                                    Materials must possess both visual warmth and enduring strength. We source rare natural stones, sustainable hardwoods, and bespoke alloys that age gracefully and elevate the tactile experience.
+                                </div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="border-thin-b-dark">
+<button @click="active !== 3 ? active = 3 : active = null" class="w-full text-left py-6 flex justify-between items-center focus:outline-none group" type="button">
+<span :class="active === 3 ? 'text-bronze' : 'text-zinc-900'" class="font-serif font-medium text-lg md:text-xl tracking-wide transition-colors duration-400 group-hover:text-bronze">What inspires our work?</span>
+<span :class="active === 3 ? 'rotate-180' : ''" class="text-xs text-zinc-500 font-light transition-transform duration-500">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path :d="active === 3 ? 'M20 12H4' : 'M12 4v16m8-8H4'" stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5"></path></svg>
+</span>
+</button>
+<div x-collapse="" x-show="active === 3">
+<div class="pb-8 text-zinc-600 font-normal text-sm leading-loose pr-8 tracking-wide">
+                                    The intersection of nature and human ingenuity. Miami’s dynamic coastline, visionary architects worldwide, and the ever-evolving skyline constantly redefine our standards of excellence.
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Testimonials (Premium Horizontal Scroll) -->
+<section class="sr-only" id="testimonials"></section>
+<section class="py-24 lg:py-0 relative bg-dark overflow-hidden border-t border-white/5" id="testimonials-pin">
+<div class="lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center" id="testimonials-sticky">
+<!-- Section Header (Sticky visually during scroll) -->
+<div class="relative top-auto left-auto z-10 max-w-[90rem] mx-auto w-full px-6 md:px-12 mb-10 lg:mb-14 pointer-events-none">
+<div class="reveal-mask mb-4">
+<p class="reveal-text text-bronze tracking-editorial-wide text-[10px] uppercase font-semibold">Client Relations</p>
+</div>
+<div class="reveal-mask mb-8">
+<h2 class="reveal-text text-4xl md:text-5xl font-serif font-medium text-white leading-tight">Unparalleled <br/><span class="italic text-zinc-500 font-light">Reputation.</span></h2>
+</div>
+</div>
+<div aria-label="Testimonials navigation" class="testimonials-mobile-nav">
+<span class="testimonials-mobile-nav__hint">Swipe right</span>
+</div>
+<!-- Horizontal Scroll Track -->
+<div class="w-full overflow-x-auto snap-x snap-mandatory no-scrollbar pl-6 md:pl-12 mt-0">
+<div class="flex gap-6 lg:gap-10 w-[max-content] pb-8 lg:pb-0 pr-12 items-stretch" id="testimonials-track">
+<!-- Card 1 -->
+<article class="testimonial-card-enhanced">
+<div class="testimonial-card-enhanced__top">
+<img alt="Julian Mercer portrait" class="testimonial-card-enhanced__image" decoding="async" height="720" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774877608/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_4_fhwtu5.png" width="560"/>
+<div class="testimonial-card-enhanced__meta">
+<div class="testimonial-card-enhanced__name">Julian Mercer</div>
+<div class="testimonial-card-enhanced__role">Founder &amp; CEO, Tech Firm</div>
+</div>
+</div>
+<div class="testimonial-card-enhanced__body">
+<p class="testimonial-card-enhanced__quote">Relocating from San Francisco, privacy was my absolute priority. ELARA bypassed the public market entirely, securing an extraordinary off-market architectural masterpiece for us. Their discretion is unmatched.</p>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="testimonial-card-enhanced">
+<div class="testimonial-card-enhanced__top">
+<img alt="Alistair Harlow portrait" class="testimonial-card-enhanced__image" decoding="async" height="720" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774876988/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_1_qweogo.png" width="560"/>
+<div class="testimonial-card-enhanced__meta">
+<div class="testimonial-card-enhanced__name">Alistair Harlow</div>
+<div class="testimonial-card-enhanced__role">Managing Partner, London Equity</div>
+</div>
+</div>
+<div class="testimonial-card-enhanced__body">
+<p class="testimonial-card-enhanced__quote">As an overseas investor, I demand rigorous, data-driven insights. ELARA's analytical approach to the Brickell sector illuminated commercial opportunities others missed, resulting in a highly lucrative portfolio expansion.</p>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="testimonial-card-enhanced">
+<div class="testimonial-card-enhanced__top">
+<img alt="Eleanor Sinclair portrait" class="testimonial-card-enhanced__image" decoding="async" height="720" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774878265/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_6_rt831z.png" width="560"/>
+<div class="testimonial-card-enhanced__meta">
+<div class="testimonial-card-enhanced__name">Eleanor Sinclair</div>
+<div class="testimonial-card-enhanced__role">Relocated from Manhattan</div>
+</div>
+</div>
+<div class="testimonial-card-enhanced__body">
+<p class="testimonial-card-enhanced__quote">Trading New York for Miami was daunting with three children. ELARA didn't just find us a house; they guided us to the perfect Coconut Grove enclave, expertly navigating school districts and community dynamics.</p>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="testimonial-card-enhanced">
+<div class="testimonial-card-enhanced__top">
+<img alt="Celeste Rowan portrait" class="testimonial-card-enhanced__image" decoding="async" height="720" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774878078/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_5_s2azjj.png" width="560"/>
+<div class="testimonial-card-enhanced__meta">
+<div class="testimonial-card-enhanced__name">Celeste Rowan</div>
+<div class="testimonial-card-enhanced__role">International Artist</div>
+</div>
+</div>
+<div class="testimonial-card-enhanced__body">
+<p class="testimonial-card-enhanced__quote">My schedule leaves no room for complications, and my profile demands absolute security. ELARA delivered a fully furnished, turnkey estate with zero friction. The ultimate luxury is peace of mind, and they provide it.</p>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="testimonial-card-enhanced">
+<div class="testimonial-card-enhanced__top">
+<img alt="Victoria Lennox portrait" class="testimonial-card-enhanced__image" decoding="async" height="720" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774876986/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_2_dyhhk2.png" width="560"/>
+<div class="testimonial-card-enhanced__meta">
+<div class="testimonial-card-enhanced__name">Victoria Lennox</div>
+<div class="testimonial-card-enhanced__role">Star Island Seller</div>
+</div>
+</div>
+<div class="testimonial-card-enhanced__body">
+<p class="testimonial-card-enhanced__quote">Their marketing is nothing short of cinematic. The bespoke campaign ELARA crafted for our waterfront estate captivated global buyers and ultimately set a new price-per-square-foot record for our neighborhood.</p>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="testimonial-card-enhanced">
+<div class="testimonial-card-enhanced__top">
+<img alt="Marcus Thorne portrait" class="testimonial-card-enhanced__image" decoding="async" height="720" loading="lazy" src="https://res.cloudinary.com/dpdxexznv/image/upload/v1774877596/ChatGPT_Image_30_%D0%B1%D0%B5%D1%80._2026_%D1%80._1_3_lkypdy.png" width="560"/>
+<div class="testimonial-card-enhanced__meta">
+<div class="testimonial-card-enhanced__name">Marcus Thorne</div>
+<div class="testimonial-card-enhanced__role">First-Time Buyer</div>
+</div>
+</div>
+<div class="testimonial-card-enhanced__body">
+<p class="testimonial-card-enhanced__quote">Stepping into the ultra-luxury tier was intimidating. ELARA acted as true advisors rather than salespeople. Their patience, market education, and seamless orchestration made a highly complex transaction feel effortless.</p>
+</div>
+</article>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Contact & Footer -->
+<section class="pt-32 pb-16 relative z-10 bg-charcoal border-t border-white/5" id="contact">
+<div class="max-w-[90rem] mx-auto px-6 md:px-12 mb-32">
+<div class="flex flex-col lg:flex-row justify-between items-start gap-16 relative">
+<!-- Left: Text Info -->
+<div class="w-full lg:w-5/12 gs-reveal">
+<h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-white leading-tight mb-8">
+                        Begin the <br/><span class="italic text-bronze font-light">Conversation.</span>
+</h2>
+<p class="text-zinc-400 font-normal mb-16 max-w-sm leading-loose text-sm tracking-wide">
+                        Whether you are acquiring a new architectural masterpiece or divesting from your portfolio, our partners are ready to advise.
+                    </p>
+<div class="space-y-10 border-t border-white/5 pt-10">
+<div>
+<p class="text-[9px] uppercase tracking-editorial-wide text-zinc-500 mb-3 font-semibold">Headquarters</p>
+<p class="text-sm font-normal text-zinc-200 tracking-wide leading-relaxed">1200 Brickell Avenue, Penthouse<br/>Miami, FL 33131</p>
+</div>
+<div>
+<p class="text-[9px] uppercase tracking-editorial-wide text-zinc-500 mb-3 font-semibold">Direct Contact</p>
+<a class="text-sm font-normal text-zinc-200 block hover:text-bronze transition-colors tracking-wide" href="mailto:inquiries@elara.miami">inquiries@elara.miami</a>
+<a class="text-sm font-normal text-zinc-200 block hover:text-bronze transition-colors tracking-wide mt-2" href="tel:+13055550199">+1 (305) 555-0199</a>
+</div>
+</div>
+</div>
+<!-- Right: Clean Editorial Form -->
+<div class="w-full lg:w-6/12 flex-shrink-0 gs-reveal">
+<!-- TODO: connect this form to your CRM, email service, or backend endpoint before deploy --><form action="#" class="bg-surface p-10 md:p-16 space-y-10 border border-white/5 rounded-[2px] shadow-2xl" id="contactForm" method="post">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div>
+<label class="block text-[9px] uppercase tracking-editorial-wide text-zinc-500 mb-4 font-semibold">First Name</label>
+<input class="input-premium" name="first_name" placeholder="John" required="" type="text"/>
+</div>
+<div>
+<label class="block text-[9px] uppercase tracking-editorial-wide text-zinc-500 mb-4 font-semibold">Last Name</label>
+<input class="input-premium" name="last_name" placeholder="Doe" required="" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-[9px] uppercase tracking-editorial-wide text-zinc-500 mb-4 font-semibold">Email Address</label>
+<input class="input-premium" name="email" placeholder="john@example.com" required="" type="email"/>
+</div>
+<div>
+<label class="block text-[9px] uppercase tracking-editorial-wide text-zinc-500 mb-4 font-semibold">Message</label>
+<textarea class="input-premium resize-none" name="message" placeholder="Tell us about your real estate goals..." required="" rows="2"></textarea>
+</div>
+<div class="pt-6">
+<button class="btn-outline-premium" type="submit">
+<span>Submit Inquiry</span>
+<svg class="w-4 h-4 btn-arrow" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="square" stroke-linejoin="miter"></path></svg>
+</button>
+</div>
+</form>
+<div aria-live="polite" class="contact-success" id="contactSuccessMessage" role="status">
+<p class="contact-success__eyebrow">Inquiry received</p>
+<h3 class="contact-success__title">Thank you — your private request is on its way.</h3>
+<p class="contact-success__copy">Our team will review your inquiry and respond by email with next steps, availability, and tailored guidance.</p>
+<button class="btn-ghost-premium justify-center" id="contactSuccessReset" type="button">Send another inquiry</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Bottom Bar -->
+<div class="border-t border-white/5 py-10 pb-[calc(4rem+env(safe-area-inset-bottom))]">
+<div class="max-w-[90rem] mx-auto px-6 md:px-12 flex flex-col gap-8">
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 text-center sm:text-left">
+<div>
+<div class="text-xl font-medium tracking-editorial-wide text-zinc-300 uppercase flex items-center justify-center sm:justify-start gap-3"><svg aria-hidden="true" class="w-4 h-4 text-bronze" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 6l5 10H7l5-10z"></path></svg><span>ELARA</span></div>
+<p class="mt-3 text-sm text-zinc-500 max-w-md leading-relaxed">Luxury architecture and real estate advisory for private buyers, investors, and design-led living in Miami and beyond.</p>
+</div>
+<div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-4 justify-items-center sm:justify-items-start w-full sm:w-auto">
+<a class="legal-link" href="#services">Expertise</a>
+<a class="legal-link" href="#portfolio">Portfolio</a>
+<a class="legal-link" href="#about">Philosophy</a>
+<a class="legal-link" href="#testimonials-pin">Clients</a>
+<a class="legal-link" href="#contact">Contact</a>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 pt-6 border-t border-white/5 text-center sm:text-left">
+<div class="grid grid-cols-2 gap-x-6 gap-y-4 justify-items-center sm:flex sm:flex-wrap sm:justify-items-start w-full sm:w-auto">
+<button class="legal-link" data-legal="privacy" type="button">Privacy Policy</button>
+<button class="legal-link" data-legal="terms" type="button">Terms of Use</button>
+<button class="legal-link" data-legal="legal" type="button">Legal Information</button>
+<button class="legal-link" data-legal="cookies" type="button">Cookie Policy</button>
+</div>
+<div class="text-zinc-600 text-[10px] tracking-editorial-wide uppercase font-medium">
+                        © 2026 ELARA Luxury Real Estate. All rights reserved.
+                    </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Special Offer Popup -->
+<div aria-hidden="true" class="offer-popup" hidden="" id="offerPopup">
+<div class="offer-popup__panel">
+<div class="px-6 md:px-8 py-6 border-b border-white/5 flex items-center justify-between gap-4">
+<div>
+<p class="offer-popup__eyebrow mb-3">Private Invitation</p>
+<h3 class="offer-popup__title">Exclusive design-led consultation.</h3>
+</div>
+<button aria-label="Close offer popup" class="offer-close" id="closeOfferPopup" type="button">✕</button>
+</div>
+<div class="px-6 md:px-8 py-8 md:py-10">
+<p class="offer-popup__copy text-sm md:text-base mb-6">For a limited time, ELARA is offering a complimentary private strategy session for buyers, investors, and owners seeking a more curated approach to luxury real estate.</p>
+<div class="offer-popup__benefits mb-8">
+<div class="offer-popup__benefit">Market clarity</div>
+<div class="offer-popup__benefit">Off-market insight</div>
+<div class="offer-popup__benefit">Private guidance</div>
+</div>
+<!-- TODO: connect this form to your CRM, email service, or backend endpoint before deploy --><form action="#" class="mb-6" id="offerLeadForm" method="post" novalidate="">
+<div class="offer-popup__form">
+<div class="offer-popup__field">
+<label class="offer-popup__label" for="offerEmail">Email address</label>
+<input class="offer-popup__input" id="offerEmail" name="email" placeholder="you@example.com" required="" type="email"/>
+<div aria-live="polite" class="offer-popup__error" id="offerEmailError" role="status"></div>
+</div>
+<div class="offer-popup__cta">
+<button class="btn-solid-premium justify-center sm:justify-center" type="submit">
+<span>Claim the offer</span>
+<svg class="w-4 h-4 btn-arrow" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="square" stroke-linejoin="miter"></path></svg>
+</button>
+<button class="offer-popup__dismiss-text" id="dismissOfferPopup" type="button">No, thanks</button>
+</div>
+</div>
+</form>
+<div aria-live="polite" class="offer-popup__success" id="offerSuccessMessage" role="status">
+                    Thanks — you're all set. Please check your email for next steps and confirmation details.
+                </div>
+<div class="offer-popup__postsuccess" id="offerPostSuccess">
+<div class="offer-popup__stack">
+<button class="btn-ghost-premium justify-center flex-1" id="offerContinueBrowsing" type="button">Continue browsing</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Portfolio Lightbox -->
+<div aria-hidden="true" class="portfolio-lightbox" hidden="" id="portfolioLightbox">
+<div class="portfolio-lightbox__panel">
+<div class="portfolio-lightbox__header">
+<p class="portfolio-lightbox__label">Portfolio Preview</p>
+<button aria-label="Close portfolio preview" class="offer-close" id="closePortfolioLightbox" type="button">✕</button>
+</div>
+<img alt="Portfolio preview" class="portfolio-lightbox__image" decoding="async" height="800" id="portfolioLightboxImage" src="" width="1200"/>
+<div class="portfolio-lightbox__meta">
+<p class="portfolio-lightbox__kicker" id="portfolioLightboxKicker">Featured Property</p>
+<h3 class="portfolio-lightbox__title" id="portfolioLightboxTitle">Property title</h3>
+<p class="portfolio-lightbox__copy" id="portfolioLightboxCopy">Property description</p>
+</div>
+</div>
+</div>
+<!-- Legal Modal -->
+<div aria-hidden="true" class="legal-modal" hidden="" id="legalModal">
+<div class="legal-modal__panel">
+<div class="legal-modal__header flex items-center justify-between px-6 md:px-8 py-5">
+<div>
+<p class="text-[10px] uppercase tracking-editorial-wide text-bronze font-semibold mb-2">ELARA</p>
+<h3 class="text-xl md:text-2xl font-serif font-medium text-white" id="legalModalTitle">Privacy Policy</h3>
+</div>
+<button class="btn-ghost-premium" id="closeLegalModal" type="button">Close</button>
+</div>
+<div class="legal-modal__copy px-6 md:px-8 py-8" id="legalModalBody"></div>
+</div>
+</div>
+<!-- Core GSAP & Lenis Initialization -->
+<script>
+        // 1. Smooth scrolling: keep native scrolling for stability and precise footer reach
+        const lenis = null;
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // 2. Register GSAP Plugins
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 3. Editorial Text Masks (Smooth slide up)
+        const revealTexts = document.querySelectorAll('.reveal-text');
+        revealTexts.forEach((text) => {
+            gsap.fromTo(text, 
+                { yPercent: 100, autoAlpha: 0 },
+                { 
+                    yPercent: 0, 
+                    autoAlpha: 1, 
+                    duration: 1.4, 
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: text.closest('.reveal-mask') || text,
+                        start: "top 95%",
+                    }
+                }
+            );
+        });
+
+        // Simple Fades for UI elements
+        const fadeElements = document.querySelectorAll('.reveal-fade');
+        fadeElements.forEach((el) => {
+            gsap.fromTo(el, 
+                { autoAlpha: 0, y: 20 },
+                { 
+                    autoAlpha: 1, 
+                    y: 0,
+                    duration: 1.5, 
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 90%",
+                    }
+                }
+            );
+        });
+
+        // 4. Portfolio images reveal smoothly from below
+        const revealImages = document.querySelectorAll('.reveal-image');
+        revealImages.forEach((wrapper) => {
+            gsap.fromTo(wrapper,
+                { autoAlpha: 0, y: 70 },
+                {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 1.25,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: wrapper,
+                        start: "top 88%",
+                    }
+                }
+            );
+        });
+
+        // 5. Subtle Parallax for Images
+        gsap.utils.toArray('.gs-parallax').forEach(img => {
+            gsap.to(img, {
+                yPercent: 4,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: img.closest('.img-wrapper'),
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+
+        // 6. Generic Section Reveal Hook
+        const sections = document.querySelectorAll('.gs-reveal');
+        sections.forEach((sec) => {
+            gsap.fromTo(sec, 
+                { autoAlpha: 0, y: 30 },
+                { 
+                    autoAlpha: 1, 
+                    y: 0,
+                    duration: 1.4, 
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: sec,
+                        start: "top 85%",
+                    }
+                }
+            );
+        });
+
+        
+        // 6b. Portfolio cards reveal smoothly from bottom
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        const portfolioObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    portfolioObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
+        portfolioItems.forEach((item) => portfolioObserver.observe(item));
+
+        // 7. Testimonials horizontal scroll animation on desktop only
+        const testimonialsTrack = document.getElementById('testimonials-track');
+        const testimonialsSection = document.getElementById('testimonials-pin');
+        const testimonialsSticky = document.getElementById('testimonials-sticky');
+        if (testimonialsTrack && testimonialsSection && testimonialsSticky) {
+            const mmTestimonials = gsap.matchMedia();
+            mmTestimonials.add('(min-width: 1024px)', () => {
+                let tween;
+                let trigger;
+                const setTestimonialsLayout = () => {
+                    const distance = Math.max(0, testimonialsTrack.scrollWidth - window.innerWidth + 96);
+                    testimonialsSection.style.minHeight = `${window.innerHeight + distance + 120}px`;
+                    if (trigger) trigger.kill();
+                    if (tween) tween.kill();
+                    gsap.set(testimonialsTrack, { x: 0 });
+                    tween = gsap.to(testimonialsTrack, {
+                        x: -distance,
+                        ease: 'none'
+                    });
+                    trigger = ScrollTrigger.create({
+                        trigger: testimonialsSection,
+                        start: 'top top',
+                        end: () => `+=${distance + 40}`,
+                        animation: tween,
+                        scrub: 1.35,
+                        pin: testimonialsSticky,
+                        anticipatePin: 1,
+                        invalidateOnRefresh: true
+                    });
+                    ScrollTrigger.refresh();
+                };
+                setTestimonialsLayout();
+                window.addEventListener('resize', setTestimonialsLayout);
+                return () => {
+                    window.removeEventListener('resize', setTestimonialsLayout);
+                    if (trigger) trigger.kill();
+                    if (tween) tween.kill();
+                    testimonialsSection.style.minHeight = '';
+                    gsap.set(testimonialsTrack, { clearProps: 'transform' });
+                };
+            });
+            mmTestimonials.add('(max-width: 1023px)', () => {
+                testimonialsSection.style.minHeight = '';
+                gsap.set(testimonialsTrack, { clearProps: 'transform' });
+            });
+        }
+
+        // 8b. Special offer popup (AIDA-style) after 5 seconds
+        const offerPopup = document.getElementById('offerPopup');
+        const closeOfferPopupBtn = document.getElementById('closeOfferPopup');
+        const dismissOfferPopupBtn = document.getElementById('dismissOfferPopup');
+        const offerContinueBrowsingBtn = document.getElementById('offerContinueBrowsing');
+        const offerPostSuccess = document.getElementById('offerPostSuccess');
+        const offerLeadForm = document.getElementById('offerLeadForm');
+        const offerEmailInput = document.getElementById('offerEmail');
+        const offerEmailError = document.getElementById('offerEmailError');
+        const offerSuccessMessage = document.getElementById('offerSuccessMessage');
+        let offerTimer;
+
+        function hasOpenModal() {
+            return (!offerPopup?.hidden) || (!legalModal?.hidden);
+        }
+        function lockBodyScroll() {
+            document.body.classList.add('modal-open');
+            if (lenis) lenis.stop();
+        }
+        function unlockBodyScroll() {
+            if (hasOpenModal()) return;
+            document.body.classList.remove('modal-open');
+            if (lenis) lenis.start();
+        }
+        function openOfferPopup() {
+            if (sessionStorage.getItem('elaraOfferSeen') === 'true') return;
+            if (!offerPopup) return;
+            offerLeadForm && (offerLeadForm.style.display = '');
+            offerSuccessMessage?.classList.remove('is-visible');
+            offerPostSuccess?.classList.remove('is-visible');
+            offerPopup.hidden = false;
+            offerPopup.setAttribute('aria-hidden', 'false');
+            lockBodyScroll();
+        }
+        function closeOfferPopup(markSeen = true) {
+            if (!offerPopup) return;
+            offerPopup.hidden = true;
+            offerPopup.setAttribute('aria-hidden', 'true');
+            if (markSeen) sessionStorage.setItem('elaraOfferSeen', 'true');
+            unlockBodyScroll();
+        }
+        if (offerPopup && sessionStorage.getItem('elaraOfferSeen') !== 'true') {
+            offerTimer = window.setTimeout(openOfferPopup, 5000);
+        }
+        closeOfferPopupBtn?.addEventListener('click', () => closeOfferPopup(true));
+        dismissOfferPopupBtn?.addEventListener('click', () => closeOfferPopup(true));
+        offerContinueBrowsingBtn?.addEventListener('click', () => closeOfferPopup(true));
+        offerLeadForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = offerEmailInput.value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                offerEmailError.textContent = 'Please enter a valid email address.';
+                offerSuccessMessage.classList.remove('is-visible');
+                offerPostSuccess?.classList.remove('is-visible');
+                offerEmailInput.focus();
+                return;
+            }
+            offerEmailError.textContent = '';
+            offerSuccessMessage.classList.add('is-visible');
+            offerPostSuccess?.classList.add('is-visible');
+            offerLeadForm.style.display = 'none';
+            sessionStorage.setItem('elaraOfferLeadEmail', email);
+            sessionStorage.setItem('elaraOfferSeen', 'true');
+            offerLeadForm.reset();
+        });
+        offerPopup?.addEventListener('click', (e) => {
+            if (e.target === offerPopup) closeOfferPopup(true);
+        });
+
+
+        // 8c. Scroll progress indicator
+        const scrollProgressBar = document.getElementById('scrollProgressBar');
+        const updateScrollProgress = () => {
+            if (!scrollProgressBar) return;
+            const scrollTop = window.scrollY || window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+            scrollProgressBar.style.width = `${progress}%`;
+        };
+        updateScrollProgress();
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        window.addEventListener('resize', updateScrollProgress);
+
+        // 8d. Portfolio lightbox
+        const portfolioLightbox = document.getElementById('portfolioLightbox');
+        const closePortfolioLightboxBtn = document.getElementById('closePortfolioLightbox');
+        const portfolioLightboxImage = document.getElementById('portfolioLightboxImage');
+        const portfolioLightboxTitle = document.getElementById('portfolioLightboxTitle');
+        const portfolioLightboxKicker = document.getElementById('portfolioLightboxKicker');
+        const portfolioLightboxCopy = document.getElementById('portfolioLightboxCopy');
+        const portfolioCards = document.querySelectorAll('.portfolio-card');
+
+        function openPortfolioLightbox(card) {
+            if (!portfolioLightbox || !card) return;
+            const image = card.querySelector('img');
+            const title = card.querySelector('h3, h4');
+            const kicker = card.querySelector('p');
+            const paragraphs = [...card.querySelectorAll('p')];
+            const copy = paragraphs.length ? paragraphs[paragraphs.length - 1] : null;
+            const lightboxPanel = portfolioLightbox.querySelector('.portfolio-lightbox__panel');
+            if (image) {
+                portfolioLightboxImage.src = image.src;
+                portfolioLightboxImage.alt = image.alt || 'Portfolio preview';
+                const isPortrait = image.naturalHeight > image.naturalWidth;
+                lightboxPanel?.classList.toggle('is-portrait', Boolean(isPortrait));
+            } else {
+                lightboxPanel?.classList.remove('is-portrait');
+            }
+            portfolioLightboxTitle.textContent = title?.textContent?.trim() || 'Featured property';
+            portfolioLightboxKicker.textContent = kicker?.textContent?.trim() || 'Private portfolio';
+            portfolioLightboxCopy.textContent = copy?.textContent?.trim() || 'A curated portfolio detail from ELARA.';
+            portfolioLightbox.hidden = false;
+            portfolioLightbox.setAttribute('aria-hidden', 'false');
+            lockBodyScroll();
+        }
+        function closePortfolioLightbox() {
+            if (!portfolioLightbox) return;
+            portfolioLightbox.hidden = true;
+            portfolioLightbox.setAttribute('aria-hidden', 'true');
+            unlockBodyScroll();
+        }
+        portfolioCards.forEach((card) => {
+            card.addEventListener('click', () => openPortfolioLightbox(card));
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openPortfolioLightbox(card);
+                }
+            });
+        });
+        closePortfolioLightboxBtn?.addEventListener('click', closePortfolioLightbox);
+        portfolioLightbox?.addEventListener('click', (e) => {
+            if (e.target === portfolioLightbox) closePortfolioLightbox();
+        });
+
+        // 8e. Contact form success state
+        const contactForm = document.getElementById('contactForm');
+        const contactSuccessMessage = document.getElementById('contactSuccessMessage');
+        const contactSuccessReset = document.getElementById('contactSuccessReset');
+        contactForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            const requiredFields = ['first_name', 'last_name', 'email', 'message'];
+            const isValid = requiredFields.every((field) => String(formData.get(field) || '').trim());
+            const email = String(formData.get('email') || '').trim();
+            if (!isValid || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please complete all fields with a valid email address.');
+                return;
+            }
+            contactForm.style.display = 'none';
+            contactSuccessMessage?.classList.add('is-visible');
+        });
+        contactSuccessReset?.addEventListener('click', () => {
+            contactForm.reset();
+            contactForm.style.display = '';
+            contactSuccessMessage?.classList.remove('is-visible');
+        });
+
+        // 9. Legal Modal Content
+        const legalContent = {
+            privacy: {
+                title: "Privacy Policy",
+                body: `
+                    <p>ELARA Luxury Real Estate respects your privacy and is committed to protecting the personal information you share through this website.</p>
+                    <h4>Information We Collect</h4>
+                    <p>We may collect your name, email address, phone number, inquiry details, and any information you submit through the contact form or direct communication.</p>
+                    <h4>How We Use Information</h4>
+                    <p>Your information is used to respond to inquiries, provide real estate advisory services, improve the website experience, and communicate relevant updates about our services.</p>
+                    <h4>Sharing of Information</h4>
+                    <p>We do not sell your personal information. Information may be shared with trusted service providers or legal advisors only when necessary to support our operations or comply with legal obligations.</p>
+                    <h4>Data Security</h4>
+                    <p>We apply commercially reasonable safeguards to protect personal information; however, no digital transmission or storage system is completely secure.</p>
+                    <h4>Contact</h4>
+                    <p>For privacy requests, contact ELARA at inquiries@elara.miami or +1 (305) 555-0199.</p>`
+            },
+            terms: {
+                title: "Terms of Use",
+                body: `
+                    <p>By using this website, you agree to these Terms of Use. If you do not agree, please discontinue use of the website.</p>
+                    <h4>Website Purpose</h4>
+                    <p>This site is provided for informational and marketing purposes related to luxury real estate and design-led advisory services.</p>
+                    <h4>No Offer or Guarantee</h4>
+                    <p>Property information, visuals, examples, and market commentary are presented for general reference and do not constitute a binding offer, guarantee, or financial advice.</p>
+                    <h4>Intellectual Property</h4>
+                    <p>All branding, design, copy, imagery, motion, and layout elements are owned by ELARA or used under permission. Reproduction without written consent is prohibited.</p>
+                    <h4>Limitation of Liability</h4>
+                    <p>ELARA is not liable for any damages arising from use of this website, reliance on its content, or interruptions in website availability.</p>`
+            },
+            legal: {
+                title: "Legal Information",
+                body: `
+                    <p>ELARA Luxury Real Estate is a concept luxury advisory brand presented for premium real estate marketing and portfolio demonstration.</p>
+                    <h4>Business Details</h4>
+                    <p>ELARA Luxury Real Estate<br>1200 Brickell Avenue, Penthouse<br>Miami, FL 33131<br>Email: inquiries@elara.miami<br>Phone: +1 (305) 555-0199</p>
+                    <h4>Professional Disclaimer</h4>
+                    <p>Listings, pricing examples, testimonials, visuals, and case study references may be representative or illustrative unless otherwise indicated. Users should verify all investment, legal, and transactional details independently.</p>
+                    <h4>Jurisdiction</h4>
+                    <p>Use of this website is governed by applicable laws and regulations in the relevant jurisdiction of operation.</p>`
+            },
+            cookies: {
+                title: "Cookie Policy",
+                body: `
+                    <p>This website may use cookies and similar technologies to improve performance, understand usage patterns, and enhance the browsing experience.</p>
+                    <h4>What Cookies Do</h4>
+                    <p>Cookies help remember user preferences, measure website traffic, and support analytics related to page interaction and performance.</p>
+                    <h4>Types of Cookies</h4>
+                    <p>We may use essential cookies, analytics cookies, and functional cookies. No advertising cookie system is intentionally used unless added through future integrations.</p>
+                    <h4>Your Choices</h4>
+                    <p>You can manage or disable cookies in your browser settings. Disabling cookies may affect how some parts of the site function.</p>`
+            }
+        };
+
+        const legalModal = document.getElementById('legalModal');
+        const legalModalTitle = document.getElementById('legalModalTitle');
+        const legalModalBody = document.getElementById('legalModalBody');
+        const closeLegalModalBtn = document.getElementById('closeLegalModal');
+
+        function openLegalModal(type) {
+            const item = legalContent[type];
+            if (!item) return;
+            legalModalTitle.textContent = item.title;
+            legalModalBody.innerHTML = item.body;
+            legalModal.hidden = false;
+            legalModal.setAttribute('aria-hidden', 'false');
+            legalModalBody.scrollTop = 0;
+            lockBodyScroll();
+        }
+
+        function closeLegalModal() {
+            legalModal.hidden = true;
+            legalModal.setAttribute('aria-hidden', 'true');
+            unlockBodyScroll();
+        }
+
+        document.querySelectorAll('[data-legal]').forEach(btn => {
+            btn.addEventListener('click', () => openLegalModal(btn.dataset.legal));
+        });
+        closeLegalModalBtn.addEventListener('click', closeLegalModal);
+        legalModal.addEventListener('click', (e) => {
+            if (e.target === legalModal) closeLegalModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (!legalModal.hidden) closeLegalModal();
+                else if (portfolioLightbox && !portfolioLightbox.hidden) closePortfolioLightbox();
+                else if (offerPopup && !offerPopup.hidden) closeOfferPopup(true);
+            }
+        });
+
+
+        // 10. Keep wheel scrolling inside the legal modal and popup panels
+        const legalModalPanel = document.querySelector('.legal-modal__panel');
+        const legalModalScrollable = document.getElementById('legalModalBody');
+        const offerPopupPanel = offerPopup?.querySelector('.offer-popup__panel');
+
+        function enableModalWheelScroll(container) {
+            if (!container) return;
+            container.addEventListener('wheel', (e) => {
+                const canScroll = container.scrollHeight > container.clientHeight;
+                if (!canScroll) {
+                    e.stopPropagation();
+                    return;
+                }
+                e.preventDefault();
+                container.scrollTop += e.deltaY;
+            }, { passive: false });
+        }
+
+        [legalModalPanel, legalModalScrollable, offerPopupPanel].forEach((el) => {
+            if (!el) return;
+            el.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+        });
+        enableModalWheelScroll(legalModalScrollable);
+        enableModalWheelScroll(offerPopupPanel);
+
+        // 11. Contact form handler moved earlier for success-state polish
+
+        // 12. Signature cursor / touch ripple
+        const cursorGlow = document.getElementById('cursorGlow');
+        const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        if (cursorGlow && finePointer) {
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let currentX = mouseX;
+            let currentY = mouseY;
+            const tick = () => {
+                currentX += (mouseX - currentX) * 0.18;
+                currentY += (mouseY - currentY) * 0.18;
+                cursorGlow.style.left = currentX + 'px';
+                cursorGlow.style.top = currentY + 'px';
+                requestAnimationFrame(tick);
+            };
+            tick();
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursorGlow.classList.add('is-active');
+            });
+            document.addEventListener('mouseleave', () => cursorGlow.classList.remove('is-active'));
+            document.querySelectorAll('a, button, input, textarea, .offer-popup__panel').forEach((el) => {
+                el.addEventListener('mouseenter', () => cursorGlow.classList.add('is-hover'));
+                el.addEventListener('mouseleave', () => cursorGlow.classList.remove('is-hover'));
+            });
+        }
+        const makeRipple = (x, y) => {
+            const ripple = document.createElement('div');
+            ripple.className = 'tap-ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            document.body.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        };
+        window.addEventListener('pointerdown', (e) => {
+            if (e.pointerType !== 'mouse' || !finePointer) {
+                makeRipple(e.clientX, e.clientY);
+            }
+        }, { passive: true });
+
+
+        // Global card hover / mobile spotlight animation
+        const deluxeCardSelectors = ['#services .grid > div', '.portfolio-card', '.testimonial-card-enhanced', '#contact form', '.contact-success'];
+        const deluxeCards = document.querySelectorAll(deluxeCardSelectors.join(','));
+        const coarsePointer = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+        deluxeCards.forEach((card) => {
+            card.classList.add('wow-card-ready');
+        });
+        if (coarsePointer && deluxeCards.length) {
+            const mobileCardObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    entry.target.classList.toggle('card-mobile-spotlight', entry.isIntersecting && entry.intersectionRatio > 0.55);
+                });
+            }, { threshold: [0.55, 0.75], rootMargin: '0px 0px -6% 0px' });
+            deluxeCards.forEach((card) => mobileCardObserver.observe(card));
+        }
+
+    </script>
+</body>
+</html>
