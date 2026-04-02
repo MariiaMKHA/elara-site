@@ -316,7 +316,160 @@ const testimonialsScroller = document.querySelector('#testimonials-pin .overflow
             text-transform: uppercase;
             transition: color 0.3s ease;
         }
-        .legal-link:hover { color: #C39A52; }
+                .legal-link:hover { color: #C39A52; }
+        .footer-premium {
+            display: grid;
+            grid-template-columns: minmax(230px, 290px) minmax(150px, 180px) minmax(150px, 180px) minmax(150px, 180px) minmax(240px, 300px);
+            gap: 3.35rem;
+            align-items: start;
+        }
+        .footer-brand-lockup {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.85rem;
+        }
+        .footer-brand-symbol {
+            width: 1.35rem;
+            height: 1.35rem;
+            color: #C39A52;
+            flex-shrink: 0;
+        }
+        .footer-brand-mark {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+        .footer-brand-name {
+            color: #ffffff;
+            font-size: 1.95rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 500;
+            line-height: 1;
+        }
+        .footer-brand-subtitle {
+            color: rgba(255,255,255,0.50);
+            font-size: 0.9rem;
+            line-height: 1.45;
+            max-width: 12rem;
+        }
+        .footer-column-title {
+            color: #f4efe5;
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            margin-bottom: 0.95rem;
+        }
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+        .footer-link {
+            color: #d4d4d8;
+            font-size: 0.96rem;
+            line-height: 1.45;
+            transition: color 0.3s ease, opacity 0.3s ease;
+            text-align: left;
+        }
+        .footer-link:hover {
+            color: #C39A52;
+        }
+        .footer-aside {
+            border-left: 1px solid rgba(255,255,255,0.16);
+            padding-left: 1.1rem;
+            max-width: 17rem;
+        }
+        .footer-aside-copy {
+            color: #ece7dc;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.02rem;
+            line-height: 1.4;
+            font-style: italic;
+        }
+        .footer-bottom-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 1rem 1.5rem;
+        }
+        .footer-copyright {
+            color: #ece7dc;
+            font-size: 0.82rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            line-height: 1.5;
+        }
+        @media (max-width: 1180px) {
+            .footer-premium {
+                grid-template-columns: 1.15fr 1fr 1fr;
+                gap: 2.2rem 1.8rem;
+            }
+            .footer-aside {
+                grid-column: 1 / -1;
+                max-width: none;
+            }
+        }
+        @media (max-width: 767px) {
+            .footer-premium {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 1.45rem 1.15rem;
+                align-items: start;
+            }
+            .footer-brand-lockup {
+                grid-column: 1 / -1;
+                gap: 0.65rem;
+                margin-bottom: 0.35rem;
+            }
+            .footer-brand-mark {
+                gap: 0.75rem;
+            }
+            .footer-brand-name {
+                font-size: 1.45rem;
+                letter-spacing: 0.16em;
+            }
+            .footer-brand-subtitle {
+                font-size: 0.82rem;
+                line-height: 1.45;
+                max-width: 11rem;
+            }
+            .footer-column-title {
+                font-size: 0.76rem;
+                margin-bottom: 0.7rem;
+            }
+            .footer-links {
+                gap: 0.22rem;
+            }
+            .footer-link {
+                font-size: 0.78rem;
+                line-height: 1.45;
+            }
+            .footer-aside {
+                grid-column: 1 / -1;
+                padding-left: 0.75rem;
+                border-left: 1px solid rgba(255,255,255,0.16);
+                padding-top: 0.1rem;
+                max-width: 21rem;
+                margin-top: 0.25rem;
+            }
+            .footer-aside-copy {
+                font-size: 0.82rem;
+                line-height: 1.42;
+            }
+            .footer-bottom-bar {
+                justify-content: center;
+                text-align: center;
+            }
+            .footer-copyright {
+                font-size: 0.72rem;
+                letter-spacing: 0.12em;
+                line-height: 1.55;
+                max-width: 21rem;
+                margin: 0 auto;
+            }
+        }
         .legal-modal[hidden] { display: none; }
         .legal-modal {
             position: fixed;
@@ -636,58 +789,30 @@ const testimonialsScroller = document.querySelector('#testimonials-pin .overflow
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.1rem;
+            padding: 1.25rem;
             background: rgba(6,6,8,0.82);
             backdrop-filter: blur(16px);
         }
         .portfolio-lightbox__panel {
-            width: min(1040px, 100%);
-            max-height: 88vh;
+            width: min(1200px, 100%);
+            max-height: 90vh;
             overflow: hidden;
             border: 1px solid rgba(195,154,82,0.24);
             border-radius: 10px;
             background: linear-gradient(180deg, rgba(10,10,12,0.98) 0%, rgba(18,18,22,0.98) 100%);
             box-shadow: 0 30px 90px rgba(0,0,0,0.45);
-            display: flex;
-            flex-direction: column;
-        }
-        .portfolio-lightbox__panel.is-portrait {
-            width: min(860px, 100%);
-        }
-        .portfolio-lightbox__header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 1rem 1.1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            flex-shrink: 0;
-        }
-        .portfolio-lightbox__label {
-            font-size: 0.62rem;
-            letter-spacing: 0.24em;
-            text-transform: uppercase;
-            color: #C39A52;
-            font-weight: 600;
         }
         .portfolio-lightbox__image {
             width: 100%;
-            height: min(48vh, 520px);
-            object-fit: contain;
-            object-position: center center;
+            height: min(64vh, 760px);
+            object-fit: cover;
             background: #111;
-            display: block;
-            flex-shrink: 0;
-        }
-        .portfolio-lightbox__panel.is-portrait .portfolio-lightbox__image {
-            height: min(56vh, 640px);
         }
         .portfolio-lightbox__meta {
-            padding: 1.15rem 1.25rem 1.35rem;
+            padding: 1.35rem 1.35rem 1.6rem;
             display: flex;
             flex-direction: column;
-            gap: 0.55rem;
-            flex-shrink: 0;
+            gap: 0.7rem;
         }
         .portfolio-lightbox__kicker {
             font-size: 0.62rem;
@@ -699,52 +824,18 @@ const testimonialsScroller = document.querySelector('#testimonials-pin .overflow
         .portfolio-lightbox__title {
             font-family: 'Playfair Display', serif;
             color: #f6f2ea;
-            font-size: clamp(2rem, 3vw, 3.2rem);
-            line-height: 0.98;
+            font-size: clamp(1.7rem, 3vw, 2.8rem);
+            line-height: 1;
         }
         .portfolio-lightbox__copy {
-            color: #d3cec4;
-            line-height: 1.7;
+            color: #c7c7cf;
+            line-height: 1.8;
             max-width: 60rem;
             font-size: 0.95rem;
         }
         @media (min-width: 900px) {
             .portfolio-lightbox__meta {
-                padding: 1.25rem 1.45rem 1.5rem;
-            }
-        }
-        @media (max-width: 767px) {
-            .portfolio-lightbox {
-                padding: 0.85rem;
-                align-items: flex-start;
-                overflow-y: auto;
-            }
-            .portfolio-lightbox__panel {
-                max-height: calc(100dvh - 1.7rem);
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            .portfolio-lightbox__header {
-                padding: 0.95rem 1rem;
-            }
-            .portfolio-lightbox__image {
-                height: auto;
-                max-height: 54dvh;
-            }
-            .portfolio-lightbox__panel.is-portrait .portfolio-lightbox__image {
-                max-height: 58dvh;
-            }
-            .portfolio-lightbox__meta {
-                padding: 1rem 1rem 1.15rem;
-                gap: 0.5rem;
-            }
-            .portfolio-lightbox__title {
-                font-size: clamp(2rem, 8vw, 2.8rem);
-                line-height: 1.02;
-            }
-            .portfolio-lightbox__copy {
-                font-size: 0.94rem;
-                line-height: 1.65;
+                padding: 1.5rem 1.7rem 1.8rem;
             }
         }
 
@@ -1872,31 +1963,50 @@ const testimonialsScroller = document.querySelector('#testimonials-pin .overflow
 </div>
 </div>
 <!-- Footer Bottom Bar -->
-<div class="border-t border-white/5 py-10 pb-[calc(4rem+env(safe-area-inset-bottom))]">
-<div class="max-w-[90rem] mx-auto px-6 md:px-12 flex flex-col gap-8">
-<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 text-center sm:text-left">
+<div class="border-t border-white/5 py-6 pb-[calc(0.9rem+env(safe-area-inset-bottom))]">
+<div class="max-w-[90rem] mx-auto px-6 md:px-12">
+<div class="footer-premium">
+<div class="footer-brand-lockup">
+<div class="footer-brand-mark">
+<svg class="footer-brand-symbol" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 22h20L12 2zm0 6l5 10H7l5-10z"></path></svg>
+<div class="footer-brand-name">ELARA</div>
+</div>
+<p class="footer-brand-subtitle">Luxury architecture and real estate for design-led living.</p>
+</div>
 <div>
-<div class="text-xl font-medium tracking-editorial-wide text-zinc-300 uppercase flex items-center justify-center sm:justify-start gap-3"><svg aria-hidden="true" class="w-4 h-4 text-bronze" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 6l5 10H7l5-10z"></path></svg><span>ELARA</span></div>
-<p class="mt-3 text-sm text-zinc-500 max-w-md leading-relaxed">Luxury architecture and real estate advisory for private buyers, investors, and design-led living in Miami and beyond.</p>
-</div>
-<div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-4 justify-items-center sm:justify-items-start w-full sm:w-auto">
-<a class="legal-link" href="#services">Expertise</a>
-<a class="legal-link" href="#portfolio">Portfolio</a>
-<a class="legal-link" href="#about">Philosophy</a>
-<a class="legal-link" href="#testimonials-pin">Clients</a>
-<a class="legal-link" href="#contact">Contact</a>
+<div class="footer-column-title">Navigation</div>
+<div class="footer-links">
+<a class="footer-link" href="#services">Expertise</a>
+<a class="footer-link" href="#portfolio">Portfolio</a>
+<a class="footer-link" href="#about">Philosophy</a>
+<a class="footer-link" href="#testimonials-pin">Clients</a>
+<a class="footer-link" href="#contact">Contact</a>
 </div>
 </div>
-<div class="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 pt-6 border-t border-white/5 text-center sm:text-left">
-<div class="grid grid-cols-2 gap-x-6 gap-y-4 justify-items-center sm:flex sm:flex-wrap sm:justify-items-start w-full sm:w-auto">
-<button class="legal-link" data-legal="privacy" type="button">Privacy Policy</button>
-<button class="legal-link" data-legal="terms" type="button">Terms of Use</button>
-<button class="legal-link" data-legal="legal" type="button">Legal Information</button>
-<button class="legal-link" data-legal="cookies" type="button">Cookie Policy</button>
+<div>
+<div class="footer-column-title">Legal</div>
+<div class="footer-links">
+<button class="footer-link" data-legal="privacy" type="button">Privacy Policy</button>
+<button class="footer-link" data-legal="terms" type="button">Terms of Use</button>
+<button class="footer-link" data-legal="cookies" type="button">Cookie Policy</button>
+<button class="footer-link" data-legal="legal" type="button">Legal Information</button>
 </div>
-<div class="text-zinc-600 text-[10px] tracking-editorial-wide uppercase font-medium">
-                        © 2026 ELARA Luxury Real Estate. All rights reserved.
-                    </div>
+</div>
+<div>
+<div class="footer-column-title">Connect</div>
+<div class="footer-links">
+<a class="footer-link" href="https://instagram.com/yourhandle" rel="noopener noreferrer" target="_blank">Instagram</a>
+<a class="footer-link" href="https://wa.me/15555550199" rel="noopener noreferrer" target="_blank">WhatsApp</a>
+<a class="footer-link" href="https://t.me/yourusername" rel="noopener noreferrer" target="_blank">Telegram</a>
+<a class="footer-link" href="mailto:inquiries@elara.miami">Email</a>
+</div>
+</div>
+<div class="footer-aside">
+<p class="footer-aside-copy">Luxury architecture and real estate advisory for private buyers, investors, and design-led living in Miami and beyond.</p>
+</div>
+</div>
+<div class="mt-10 pt-6 border-t border-white/5 footer-bottom-bar">
+<div class="footer-copyright">© 2026 ELARA LUXURY REAL ESTATE. ALL RIGHTS RESERVED.</div>
 </div>
 </div>
 </div>
@@ -1948,8 +2058,8 @@ const testimonialsScroller = document.querySelector('#testimonials-pin .overflow
 <!-- Portfolio Lightbox -->
 <div aria-hidden="true" class="portfolio-lightbox" hidden="" id="portfolioLightbox">
 <div class="portfolio-lightbox__panel">
-<div class="portfolio-lightbox__header">
-<p class="portfolio-lightbox__label">Portfolio Preview</p>
+<div class="px-5 md:px-6 py-4 border-b border-white/5 flex items-center justify-between gap-4">
+<p class="text-[10px] uppercase tracking-editorial-wide text-bronze font-semibold">Portfolio Preview</p>
 <button aria-label="Close portfolio preview" class="offer-close" id="closePortfolioLightbox" type="button">✕</button>
 </div>
 <img alt="Portfolio preview" class="portfolio-lightbox__image" decoding="async" height="800" id="portfolioLightboxImage" src="" width="1200"/>
@@ -2223,18 +2333,13 @@ const testimonialsScroller = document.querySelector('#testimonials-pin .overflow
         function openPortfolioLightbox(card) {
             if (!portfolioLightbox || !card) return;
             const image = card.querySelector('img');
-            const title = card.querySelector('h3, h4');
+            const title = card.querySelector('h4');
             const kicker = card.querySelector('p');
             const paragraphs = [...card.querySelectorAll('p')];
             const copy = paragraphs.length ? paragraphs[paragraphs.length - 1] : null;
-            const lightboxPanel = portfolioLightbox.querySelector('.portfolio-lightbox__panel');
             if (image) {
                 portfolioLightboxImage.src = image.src;
                 portfolioLightboxImage.alt = image.alt || 'Portfolio preview';
-                const isPortrait = image.naturalHeight > image.naturalWidth;
-                lightboxPanel?.classList.toggle('is-portrait', Boolean(isPortrait));
-            } else {
-                lightboxPanel?.classList.remove('is-portrait');
             }
             portfolioLightboxTitle.textContent = title?.textContent?.trim() || 'Featured property';
             portfolioLightboxKicker.textContent = kicker?.textContent?.trim() || 'Private portfolio';
